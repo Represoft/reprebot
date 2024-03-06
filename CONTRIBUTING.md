@@ -12,7 +12,7 @@ git clone https://github.com/Represoft/reprebot.git
 
 3. Set up the development environment:
 
-> You will need a recent version of Python, a Python environment manager and a Python package manager installed in your system. Here were going to use: `virtualenv` and `pip` but you can use any other that you find more convenient.
+> You will need a recent version of Python, a Python environment manager and a Python package manager installed in your system. Here we're going to use: `virtualenv` and `pip` but you can use any other that you find more convenient.
 
 **Create the virtual environment:**
 
