@@ -4,13 +4,17 @@ To send your contributions follow these steps:
 
 1. Write an issue for your idea if it doesn't exist [here](https://github.com/Represoft/reprebot/issues).
 
-2. Clone the repository:
+2. Fork the repository.
+
+3. Clone your fork.
 
 ```sh
-git clone https://github.com/Represoft/reprebot.git
+git clone https://github.com/{your-username}/reprebot.git
 ```
 
-3. Set up the development environment:
+Owners can clone the repository directly instead of fork it.
+
+4. Set up the development environment:
 
 > You will need a recent version of Python, a Python environment manager and a Python package manager installed in your system. Here we're going to use: `virtualenv` and `pip` but you can use any other that you find more convenient.
 
@@ -42,7 +46,7 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Create a branch with the following naming convention:
+5. Create a branch with the following naming convention:
 
 ```
 reprebot-<your-github-username>
@@ -56,9 +60,9 @@ Create and switch to your branch:
 git checkout -b <your-branch-name>
 ```
 
-5. Code your idea.
+6. Code your idea.
 
-6. Commit your changes locally.
+7. Commit your changes locally.
 
 Use the following convention for your commit messages:
 
@@ -84,7 +88,7 @@ reprebot/feat: #19 define the llm client class
 - use `LLMClient` class in `app` module
 ```
 
-7. Rebase onto the `main` branch.
+8. Rebase onto the `main` branch.
 
 Do this only if there are changes in the `main` branch.
 
@@ -104,12 +108,14 @@ git rebase main
 
 Fix any conflict that might arise during the rebase.
 
-8. Push your changes to your branch.
+9. Push your changes to your branch.
 
 ```sh
 git push --set-upstream origin <your-branch-name>
 ```
 
-9. Wait for the pipelines to succeed.
+10. Wait for the pipelines to succeed.
 
-10. Create a pull request.
+11. Create a pull request from your fork to [reprebot](https://github.com/Represoft/reprebot).
+
+If you're an owner, create the PR from your branch instead.
