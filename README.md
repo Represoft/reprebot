@@ -1,30 +1,48 @@
 <h1 align="center"> 🤖 Reprebot </h1>
 
 <div align="center">
-  Welcome to Reprebot, your future assistant in the Faculty of Engineering community at the National University of Colombia!
+  Welcome to <b>Reprebot</b>!
+
+  A chatbot to answer questions for the Faculty of Engineering community at the National University of Colombia.
 </div>
 
 ## Introduction 🚀
 
-Reprebot is an upcoming chatbot built with Retrieval Augmented Generation (RAG) technology, designed to efficiently respond to inquiries from students within the Faculty of Engineering at the National University of Colombia. Whether you're seeking information about academic processes, course details, or general assistance related to your academic journey, Reprebot will leverage RAG to ensure accurate and relevant responses, ultimately enhancing the overall experience for students seeking assistance within the Faculty of Engineering.
+**Reprebot** uses a method called Retrieval Augmented Generation (RAG). This technique involves utilizing a Language Model (LLM) to generate text using a specific context of information stored in a vector database. In this case, the context revolves around information related to the academic processes within the Faculty of Engineering.
+
+## Scope 🔭
+
+**Reprebot** will initially be a microservice containerized and ready to be incorporated in any architecture. In the future we may implement a user-friendly interface so that the community can access it in the web at any time. Or it may be integrated in any of the other systems of the Faculty of Engineering.
 
 ## Purpose 🎯
 
-Reprebot is driven by three primary objectives:
+**Reprebot** has the following main objectives:
 
-- **Quick Help:** Providing prompt responses to student inquiries, ensuring minimal waiting times for assistance.
-- **Student Support:** Guiding students through their academic journey by offering information on courses, processes, and addressing study-related issues.
-- **Lighten the Load:** Automating responses to common queries to alleviate the workload of student representatives, allowing them to focus on more complex tasks and student needs.
+- **Quick Help:** Provide fast responses to the Faculty of Engineering community whenever they need assistance, eliminating the need for emails or visiting various departments.
+
+- **Student Support:** Assist students throughout their academic journey by offering information on processes, events, and career opportunities.
+
+- **Reduce Workload:** Ease the workload of **Repreisis** and other dependencies within the Faculty of Engineering, enabling them to concentrate on more impactful tasks and better address student needs.
 
 ## Getting Involved 🙌
 
-There are multiple ways to contribute to Reprebot:
+There are various ways to contribute to **Reprebot**:
 
-- **Join the Team:** Interested in contributing to the project? Send an email to repreisis_fibog@unal.edu.co expressing your interest in joining our team of dedicated volunteers!
-- **Provide Feedback:** Share your thoughts on how Reprebot can be improved. We value your feedback and encourage you to reach out to the same email address with any suggestions or ideas.
-- **Spread the Word:** Help us expand Reprebot's reach by informing your friends and peers about its capabilities and benefits within the Faculty of Engineering community.
+- **Join the Team:** Interested in being part of the project? Express your interest in joining our team of dedicated volunteers by reaching out to **Repreisis** through any of their communication channels.
 
-## Dependencies 🛠️
+- **Contribute:** Share your ideas by submitting them to our [issues](https://github.com/Represoft/reprebot/issues) backlog. Check out our [contributing](CONTRIBUTING.md) guidelines and start collaborating.
+
+- **Provide Feedback:** Let us know how Reprebot can be enhanced. Your feedback is valuable, and you can reach out to **Repreisis** directly or share your ideas in our [issues](https://github.com/Represoft/reprebot/issues) backlog.
+
+- **Spread the Word:** Help us broaden Reprebot's impact by telling your friends and peers about its capabilities and benefits within the Faculty of Engineering community.
+
+## Technical Details ⚙️
+
+### Programming Languages 🖥️
+
+- **Python**
+
+### Dependencies 🛠️
 
 Reprebot relies on the following dependencies:
 
@@ -35,7 +53,3 @@ Reprebot relies on the following dependencies:
 - `pytest`
 
 For a comprehensive list of dependencies, including both direct and transitive dependencies, please refer to the `requirements.txt` file.
-
-## Design Considerations 🎨
-
-Our focus in designing Reprebot is on creating an intuitive, user-friendly interface that enhances user experience. We aim to ensure that interactions with the chatbot are smooth, efficient, and enjoyable for all users.
