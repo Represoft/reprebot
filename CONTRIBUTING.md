@@ -119,3 +119,6 @@ git push --set-upstream origin <your-branch-name>
 11. Create a pull request from your fork to [reprebot](https://github.com/Represoft/reprebot).
 
 If you're an owner, create the PR from your branch instead.
+
+> [!NOTE]
+> Make one pull request for each commit you create. If you've just committed and notice something needs to change, use `git commit --amend`. If you've already pushed your commit, use `git push -f`.
