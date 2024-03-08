@@ -1,7 +1,7 @@
 <h1 align="center"> 🤖 Reprebot </h1>
 
 <div align="center">
-  Welcome to <b>Reprebot</b>!
+  <h3>Welcome to <b>Reprebot</b>!</h3>
 
   A chatbot to answer questions for the Faculty of Engineering community at the National University of Colombia.
 </div>
