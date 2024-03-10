@@ -46,9 +46,9 @@ There are various ways to contribute to **Reprebot**:
 
 Reprebot relies on the following dependencies:
 
-- `coverage`
 - `chromadb`
 - `langchain`
+- `langchain-contrib`
 - `langchain-openai`
 - `pytest`
 
