@@ -1,0 +1,5 @@
+chromadb
+langchain
+langchain-contrib
+langchain-openai
+pytest
