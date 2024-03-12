@@ -28,9 +28,16 @@ class TestLLMClient:
             embedding=FakeEmbeddings(size=1),
         ).as_retriever(search_kwargs={"k": 1})
         # Empty prompt for testing
-        prompt = ChatPromptTemplate.from_messages([])
+        prompt = ChatPromptTemplate.from_messages([""])
         # Default "gpt" model use in this test
         model = llm_client.setup_model()
         # RAG chain
         chain = llm_client.setup_chain(retriever=retriever, prompt=prompt, model=model)
         assert isinstance(chain, RunnableSequence)
+
+    def test_query(self, llm_client):
+        # This test is currently using GPT model
+        # Ideally we should use a free model for this
+        # We will try to do that in the future
+        response = llm_client.query(user_input="")
+        assert isinstance(response, str)

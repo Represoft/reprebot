@@ -2,6 +2,10 @@ import os
 from langchain_openai import ChatOpenAI
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
+from langchain.prompts import ChatPromptTemplate
+from langchain.docstore.document import Document
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import FakeEmbeddings
 
 class LLMClient:
     def __init__(self, model_type: str):
@@ -39,3 +43,19 @@ class LLMClient:
             | StrOutputParser()
         )
         return chain
+
+    def query(self, user_input: str):
+        # Empty retriever for testing
+        retriever = Chroma.from_documents(
+            documents=[Document(page_content="")],
+            embedding=FakeEmbeddings(size=1),
+        ).as_retriever(search_kwargs={"k": 1})
+        # Empty prompt for testing
+        prompt = ChatPromptTemplate.from_messages([""])
+        chain = self.setup_chain(
+            retriever=retriever,
+            prompt=prompt,
+            model=self.model
+        )
+        response = chain.invoke(user_input)
+        return response
