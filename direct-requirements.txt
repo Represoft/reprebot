@@ -1,5 +1,4 @@
-chromadb
-langchain
-langchain-contrib
-langchain-openai
-pytest
+chromadb==0.4.24
+langchain==0.1.11
+langchain-openai==0.0.8
+pytest==8.1.1

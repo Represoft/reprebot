@@ -48,7 +48,6 @@ Reprebot relies on the following dependencies:
 
 - `chromadb`
 - `langchain`
-- `langchain-contrib`
 - `langchain-openai`
 - `pytest`
 
