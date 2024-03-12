@@ -1,5 +1,7 @@
 import os
 from langchain_openai import ChatOpenAI
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema.output_parser import StrOutputParser
 
 class LLMClient:
     def __init__(self, model_type: str):
@@ -25,3 +27,15 @@ class LLMClient:
         """
         # https://github.com/langchain-ai/langchain/issues/18639
         return model
+
+    def setup_chain(self, retriever, prompt, model):
+        chain = (
+            {
+                "input": RunnablePassthrough(),
+                "context": retriever,
+            }
+            | prompt
+            | model
+            | StrOutputParser()
+        )
+        return chain
