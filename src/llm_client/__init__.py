@@ -1,6 +1,5 @@
 import os
 from langchain_openai import ChatOpenAI
-from langchain_contrib.llms.testing import FakeLLM
 
 class LLMClient:
     def __init__(self, model_type: str):
@@ -17,9 +16,6 @@ class LLMClient:
                 model_name="gpt-3.5-turbo-0125",
                 temperature=temperature
             )
-        # not supported on Windows
-        elif self.model_type == "fake":
-            model = FakeLLM()
         """
         elif self.model_type == "hugging-face":
             llm = HuggingFaceEndpoint(
