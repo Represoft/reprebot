@@ -6,6 +6,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.docstore.document import Document
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import FakeEmbeddings
+from langchain.chat_models.fake import FakeListChatModel
 
 class LLMClient:
     def __init__(self, model_type: str):
@@ -22,14 +23,16 @@ class LLMClient:
                 model_name="gpt-3.5-turbo-0125",
                 temperature=temperature
             )
+        elif self.model_type == "fake":
+            model = FakeListChatModel(responses=["Hello",])
         """
         elif self.model_type == "hugging-face":
             llm = HuggingFaceEndpoint(
                 repo_id="google/gemma-7b",
             )
             model = ChatHuggingFace(llm=llm)
-        """
         # https://github.com/langchain-ai/langchain/issues/18639
+        """
         return model
 
     def setup_chain(self, retriever, prompt, model):
