@@ -47,8 +47,10 @@ There are various ways to contribute to **Reprebot**:
 Reprebot relies on the following dependencies:
 
 - `chromadb`
+- `Jinja2`
 - `langchain`
 - `langchain-openai`
 - `pytest`
+- `transformers`
 
 For a comprehensive list of dependencies, including both direct and transitive dependencies, please refer to the `requirements.txt` file.
