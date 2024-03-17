@@ -36,6 +36,21 @@ There are various ways to contribute to **Reprebot**:
 
 - **Spread the Word:** Help us broaden Reprebot's impact by telling your friends and peers about its capabilities and benefits within the Faculty of Engineering community.
 
+## How to Get Started?
+
+1. Install [Python](https://www.python.org/downloads/).
+2. Install [Git](https://git-scm.com/downloads).
+3. Install [pip](https://pip.pypa.io/en/stable/installation/).
+4. Install [virtualenv](https://virtualenv.pypa.io/en/latest/installation.html).
+5. Create a [GitHub](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) account if you don't have one.
+6. [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the [reprebot](https://github.com/Represoft/reprebot) repository.
+7. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) your fork.
+8. [Create](https://docs.python.org/3/library/venv.html) a virtual environment inside your cloned repository: `python3 -m venv env`.
+9. [Activate](https://docs.python.org/3/tutorial/venv.html) the virtual environment. On Windows, run `env\Scripts\activate`, and on Linux run `source env/bin/activate`.
+10. Install the dependencies: `pip install -r requirements.txt`.
+11. Run the unit tests: `pytest test/unit/src`.
+12. Now your ready to start sending your contributions. See this [guide](https://github.com/Represoft/reprebot/blob/main/CONTRIBUTING.md).
+
 ## Technical Details ⚙️
 
 ### Programming Languages 🖥️
