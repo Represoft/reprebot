@@ -6,7 +6,7 @@
 A chatbot to answer questions for the Faculty of Engineering community at the
 National University of Colombia.
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/91b3b1c0dca44a828461a62a5ffe032e)](https://app.codacy.com/gh/Represoft/reprebot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/91b3b1c0dca44a828461a62a5ffe032e)](https://app.codacy.com/gh/Represoft/reprebot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/91b3b1c0dca44a828461a62a5ffe032e)](https://app.codacy.com/gh/Represoft/reprebot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
 
 </div>
 
