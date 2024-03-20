@@ -1,4 +1,3 @@
-import os
 import pytest
 from src.llm_client import LLMClient
 from langchain.prompts import ChatPromptTemplate
