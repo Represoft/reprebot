@@ -15,6 +15,7 @@ chromadb==0.4.24
 click==8.1.7
 colorama==0.4.6
 coloredlogs==15.0.1
+coverage==7.4.4
 dataclasses-json==0.6.4
 Deprecated==1.2.14
 distro==1.9.0
