@@ -91,6 +91,7 @@ There are various ways to contribute to **Reprebot**:
 Reprebot relies on the following dependencies:
 
 - `chromadb`
+- `coverage`
 - `Jinja2`
 - `langchain`
 - `langchain-openai`
