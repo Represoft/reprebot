@@ -9,6 +9,8 @@
 
 ## Introduction 🚀
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b54e999c11d4aeabdd058e45b38c827)](https://app.codacy.com/gh/Represoft/reprebot?utm_source=github.com&utm_medium=referral&utm_content=Represoft/reprebot&utm_campaign=Badge_Grade)
+
 **Reprebot** uses a method called Retrieval Augmented Generation (RAG).
 This technique involves utilizing a Language Model (LLM) to generate text using
 a specific context of information stored in a vector database. In this case,
