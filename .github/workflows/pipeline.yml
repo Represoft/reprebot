@@ -25,8 +25,9 @@ jobs:
         HUGGINGFACEHUB_API_TOKEN: ${{ secrets.HUGGINGFACEHUB_API_TOKEN }}
       run: |
         coverage run -m pytest test/unit/src
+        coverage xml -o cobertura.xml
     - name: Upload coverage report
       env:
         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
       run: |
-        bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r .coverage
+        bash <(curl -Ls https://coverage.codacy.com/get.sh)
