@@ -1,4 +1,8 @@
-from src.llm_client import setup_model, setup_chain, query
+import pytest
+import os
+from src.llm_client import (
+    query,
+)
 from langchain.prompts import ChatPromptTemplate
 from langchain.docstore.document import Document
 from langchain_community.vectorstores import Chroma
@@ -6,40 +10,61 @@ from langchain_community.embeddings import FakeEmbeddings
 from langchain_core.runnables.base import RunnableSequence
 from langchain.chat_models.fake import FakeListChatModel
 from langchain_community.chat_models.huggingface import ChatHuggingFace
+from src.llm_client.types import (
+    GPTModelConfig,
+    FakeModelConfig,
+    HuggingFaceModelConfig,
+)
 
-def test_setup_model_fake():
-    model = setup_model("fake")
-    assert isinstance(model, FakeListChatModel)
-
-def test_setup_model_hugging_face():
-    model = setup_model("hugging-face")
-    assert isinstance(model, ChatHuggingFace)
-
-def test_setup_chain_fake():
-    retriever = Chroma.from_documents(
-        documents=[Document(page_content="")],
-        embedding=FakeEmbeddings(size=1),
-    ).as_retriever(search_kwargs={"k": 1})
-    prompt = ChatPromptTemplate.from_messages([""])
-    model = setup_model("fake")
-    chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
-    assert isinstance(chain, RunnableSequence)
-
-def test_setup_chain_hugging_face():
-    retriever = Chroma.from_documents(
-        documents=[Document(page_content="")],
-        embedding=FakeEmbeddings(size=1),
-    ).as_retriever(search_kwargs={"k": 1})
-    prompt = ChatPromptTemplate.from_messages([""])
-    model = setup_model("hugging-face")
-    chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
-    assert isinstance(chain, RunnableSequence)
-
-def test_query_fake():
-    response = query(user_input="", model_type="fake")
+@pytest.mark.parametrize(
+    ("user_input", "responses"),
+    [
+        ("Hello", ["Hello"]),
+        ("Hi", ["Bye"]),
+        ("Thank you", ["Welcome", "Thanks"]),
+    ],
+)
+def test_query_fake(user_input: str, responses: list[str]):
+    model_config = FakeModelConfig(
+        responses=responses,
+    )
+    response = query(user_input=user_input, model_config=model_config)
     assert isinstance(response, str)
-    assert response == "Hello"
+    assert response in responses
 
-def test_query_hugging_face():
-    response = query(user_input="", model_type="hugging-face")
+@pytest.mark.skipif(
+    os.environ.get("HUGGINGFACEHUB_API_TOKEN") is None,
+    reason="HUGGINGFACEHUB_API_TOKEN is not available"
+)
+@pytest.mark.parametrize(
+    ("user_input", "repo_id"),
+    [
+        ("Hello", "google/gemma-7b"),
+    ],
+)
+def test_query_hugging_face(user_input: str, repo_id: str):
+    model_config = HuggingFaceModelConfig(
+        repo_id=repo_id,
+    )
+    response = query(user_input=user_input, model_config=model_config)
     assert isinstance(response, str)
+
+# comment next line if you want to run this test
+@pytest.mark.skip()
+@pytest.mark.skipif(
+    os.environ.get("OPENAI_API_KEY") is None,
+    reason="OPENAI_API_KEY is not available"
+)
+@pytest.mark.parametrize(
+    ("user_input", "_word_to_check"),
+    [
+        ("Say 'Hello'", "Hello"),
+    ],
+)
+def test_query_gpt(user_input: str, _word_to_check: str):
+    model_config = GPTModelConfig(
+        model_name="gpt-3.5-turbo-0125",
+    )
+    response = query(user_input=user_input, model_config=model_config)
+    assert isinstance(response, str)
+    assert _word_to_check in response
