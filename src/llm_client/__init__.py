@@ -9,22 +9,43 @@ from langchain_community.embeddings import FakeEmbeddings
 from langchain.chat_models.fake import FakeListChatModel
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_community.llms.huggingface_endpoint import HuggingFaceEndpoint
+from .types import (
+    GPTModelConfig,
+    FakeModelConfig,
+    HuggingFaceModelConfig,
+)
 
-def setup_model(model_type: str, temperature: float = 0):
+def setup_gpt_model(model_config: GPTModelConfig): # pragma: no cover
+    model = ChatOpenAI(
+        api_key=os.environ.get("OPENAI_API_KEY"),
+        model_name=model_config.model_name,
+        temperature=model_config.temperature
+    )
+    return model
+
+def setup_fake_model(model_config: FakeModelConfig):
+    model = FakeListChatModel(responses=model_config.responses)
+    return model
+
+def setup_hugging_face_model(model_config: HuggingFaceModelConfig):
+    llm = HuggingFaceEndpoint(
+        repo_id=model_config.repo_id,
+        huggingfacehub_api_token=os.environ.get("HUGGINGFACEHUB_API_TOKEN"),
+        temperature=model_config.temperature,
+    )
+    model = ChatHuggingFace(llm=llm)
+    return model
+
+def setup_model(
+        model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig
+    ):
     model = None
-    if model_type == "gpt":
-        model = ChatOpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY"),
-            model_name="gpt-3.5-turbo-0125",
-            temperature=temperature
-        )
-    elif model_type == "fake":
-        model = FakeListChatModel(responses=["Hello"])
-    elif model_type == "hugging-face":
-        llm = HuggingFaceEndpoint(
-            repo_id="google/gemma-7b",
-        )
-        model = ChatHuggingFace(llm=llm)
+    if model_config.model_type == "gpt": # pragma: no cover
+        model = setup_gpt_model(model_config=model_config)
+    elif model_config.model_type == "fake":
+        model = setup_fake_model(model_config=model_config)
+    elif model_config.model_type == "hugging-face":
+        model = setup_hugging_face_model(model_config=model_config)
     return model
 
 def setup_chain(retriever, prompt, model):
@@ -39,15 +60,25 @@ def setup_chain(retriever, prompt, model):
     )
     return chain
 
-def query(user_input: str, model_type: str):
+def setup_prompt(messages):
+    prompt = ChatPromptTemplate.from_messages(messages)
+    return prompt
+
+def setup_retriever():
     # Empty retriever for testing
     retriever = Chroma.from_documents(
         documents=[Document(page_content="")],
         embedding=FakeEmbeddings(size=1),
     ).as_retriever(search_kwargs={"k": 1})
-    # Empty prompt for testing
-    prompt = ChatPromptTemplate.from_messages([""])
-    model = setup_model(model_type)
+    return retriever
+
+def query(
+        user_input: str,
+        model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig
+    ):
+    retriever = setup_retriever()
+    prompt = setup_prompt(messages=[""])
+    model = setup_model(model_config=model_config)
     chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
     response = chain.invoke(user_input)
     return response
