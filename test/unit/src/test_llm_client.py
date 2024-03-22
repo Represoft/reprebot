@@ -3,13 +3,6 @@ import os
 from src.llm_client import (
     query,
 )
-from langchain.prompts import ChatPromptTemplate
-from langchain.docstore.document import Document
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import FakeEmbeddings
-from langchain_core.runnables.base import RunnableSequence
-from langchain.chat_models.fake import FakeListChatModel
-from langchain_community.chat_models.huggingface import ChatHuggingFace
 from src.llm_client.types import (
     GPTModelConfig,
     FakeModelConfig,
