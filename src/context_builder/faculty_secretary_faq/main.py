@@ -1,7 +1,7 @@
 from typing import List
 import requests
 from bs4 import BeautifulSoup
-import uuid
+import hashlib
 
 def get_html(url: str):
     response = requests.get(url)
@@ -9,8 +9,8 @@ def get_html(url: str):
 
 
 def write_file(text: str) -> None:
-    file_uuid = str(uuid.uuid4())
-    with open(f"{file_uuid}.txt", "w", encoding="utf-8") as file:
+    md5_hash = hashlib.md5(text.encode()).hexdigest()
+    with open(f"{md5_hash}.txt", "w", encoding="utf-8") as file:
         file.write(text)
 
 
@@ -37,7 +37,7 @@ def main():
     url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
     html = get_html(url)
     texts = extract_texts(html)
-    map(write_file, texts)
+    list(map(write_file, texts))
 
 
 if __name__ == "__main__":

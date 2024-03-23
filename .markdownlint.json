@@ -3,7 +3,8 @@
         "allowed_elements": [
             "h1",
             "h3",
-            "div"
+            "div",
+            "b"
         ]
     }
 }
