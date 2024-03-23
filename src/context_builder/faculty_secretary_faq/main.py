@@ -13,6 +13,7 @@ def write_file(text: str) -> None:
     with open(f"{file_uuid}.txt", "w", encoding="utf-8") as file:
         file.write(text)
 
+
 def assemble_text(button):
     button_text = button.get_text(strip=True)
     next_div = button.find_next_sibling('div')
@@ -24,20 +25,20 @@ def assemble_text(button):
         text = f"{button_text}\n{combined_text}\n"
         return text
 
+
 def extract_texts(html) -> List[str]:
     soup = BeautifulSoup(html, 'html.parser')
     buttons = soup.find_all('button', class_='accordion')
-    texts = []
-    for button in buttons:
-        
-            texts.append(text)
+    texts = list(map(assemble_text, buttons))
     return texts
+
 
 def main():
     url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
     html = get_html(url)
     texts = extract_texts(html)
     map(write_file, texts)
+
 
 if __name__ == "__main__":
     main()
