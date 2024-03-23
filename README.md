@@ -90,12 +90,14 @@ There are various ways to contribute to **Reprebot**:
 
 Reprebot relies on the following dependencies:
 
+- `beautifulsoup4`
 - `chromadb`
 - `coverage`
 - `Jinja2`
 - `langchain`
 - `langchain-openai`
 - `pytest`
+- `requests`
 - `transformers`
 
 For a comprehensive list of dependencies, including both direct and transitive
