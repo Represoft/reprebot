@@ -1,7 +1,7 @@
 from typing import List
 import requests
 from bs4 import BeautifulSoup
-import hashlib
+from cryptography.hazmat.primitives import hashes
 import os
 from pathlib import Path
 
@@ -20,8 +20,10 @@ def setup_folder(folder: str = os.path.join(PROJECT_ROOT, 'data/faculty_secretar
 
 
 def write_file(text: str, folder: str = os.path.join(PROJECT_ROOT, 'data/faculty_secretary_faq')) -> None:
-    md5_hash = hashlib.md5(text.encode()).hexdigest()
-    with open(f"{folder}/{md5_hash}.txt", "w", encoding="utf-8") as file:
+    digest = hashes.Hash(hashes.SHA256())
+    digest.update(text.encode())
+    file_name = digest.finalize().hex()
+    with open(f"{folder}/{file_name}.txt", "w", encoding="utf-8") as file:
         file.write(text)
 
 

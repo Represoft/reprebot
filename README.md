@@ -93,6 +93,7 @@ Reprebot relies on the following dependencies:
 - `beautifulsoup4`
 - `chromadb`
 - `coverage`
+- `cryptography`
 - `Jinja2`
 - `langchain`
 - `langchain-openai`
