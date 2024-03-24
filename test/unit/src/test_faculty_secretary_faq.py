@@ -1,6 +1,8 @@
 import os
 import hashlib
+from typing import List
 from bs4 import BeautifulSoup
+import pytest
 from src.context_builder.faculty_secretary_faq.main import (
     get_html,
     setup_folder,
@@ -9,6 +11,7 @@ from src.context_builder.faculty_secretary_faq.main import (
     extract_texts,
 )
 import shutil
+from src.constants import PROJECT_ROOT
 
 
 MOCK_HTML = """
@@ -22,34 +25,68 @@ MOCK_HTML = """
 </html>
 """
 
-def test_get_html():
-    url = "https://google.com"
-    html = get_html(url)
+
+@pytest.mark.parametrize(
+    ("url"),
+    [
+        ("https://example.com/"),
+        ("https://google.com"),
+    ],
+)
+def test_get_html(url: str):
+    html = get_html(url=url)
     assert html is not None
 
+@pytest.mark.parametrize(
+    ("folder"),
+    [
+        (os.path.join(PROJECT_ROOT, "test/test-data/faculty_secretary_faq")),
+    ],
+)
+def test_setup_folder(folder: str):
+    setup_folder(folder=folder)
+    assert os.path.exists(folder)
+    shutil.rmtree(folder)
 
-def test_setup_folder(tmpdir):
-    setup_folder()
-    assert os.path.exists('data')
 
-
-def test_write_file():
-    text = "Test content"
-    write_file(text)
-    file_path = f'data/{hashlib.md5(text.encode()).hexdigest() + ".txt"}'
+@pytest.mark.parametrize(
+    ("folder", "text"),
+    [
+        (os.path.join(PROJECT_ROOT, "test/test-data/faculty_secretary_faq"), "Test content"),
+    ],
+)
+def test_write_file(folder: str, text: str):
+    setup_folder(folder=folder)
+    write_file(text=text, folder=folder)
+    file_name = hashlib.md5(text.encode()).hexdigest()
+    file_path = f'{folder}/{file_name}.txt'
     assert os.path.exists(file_path)
-    shutil.rmtree('data')
+    shutil.rmtree(folder)
 
 
-def test_assemble_text():
+@pytest.mark.parametrize(
+    ("_text"),
+    [
+        ("Button 1\nContent 1 Link 1\nlink1\n"),
+    ],
+)
+def test_assemble_text(_text: str):
     button = BeautifulSoup(MOCK_HTML, 'html.parser').find('button')
-    expected_text = "Button 1\nContent 1Link 1\nlink1\n"
-    assert assemble_text(button) == expected_text
+    text = assemble_text(button=button)
+    assert text == _text
 
 
-def test_extract_texts():
-    texts = extract_texts(MOCK_HTML)
-    assert texts == [
-        "Button 1\nContent 1Link 1\nlink1\n",
-        "Button 2\nContent 2Link 2\nlink2\n",
-    ]
+@pytest.mark.parametrize(
+    ("_texts"),
+    [
+        (
+            [
+                "Button 1\nContent 1 Link 1\nlink1\n",
+                "Button 2\nContent 2 Link 2\nlink2\n",
+            ]
+        ),
+    ],
+)
+def test_extract_texts(_texts: List[str]):
+    texts = extract_texts(html=MOCK_HTML)
+    assert texts == _texts
