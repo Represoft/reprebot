@@ -2,15 +2,21 @@ from typing import List
 import requests
 from bs4 import BeautifulSoup
 import hashlib
+import os
 
 def get_html(url: str):
-    response = requests.get(url)
+    response = requests.get(url, timeout=5)
     return response.text
 
 
-def write_file(text: str) -> None:
+def setup_folder(folder: str = 'data') -> None:
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+
+def write_file(text: str, folder: str = 'data') -> None:
     md5_hash = hashlib.md5(text.encode()).hexdigest()
-    with open(f"{md5_hash}.txt", "w", encoding="utf-8") as file:
+    with open(f"{folder}/{md5_hash}.txt", "w", encoding="utf-8") as file:
         file.write(text)
 
 
@@ -37,6 +43,7 @@ def main():
     url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
     html = get_html(url)
     texts = extract_texts(html)
+    setup_folder()
     list(map(write_file, texts))
 
 
