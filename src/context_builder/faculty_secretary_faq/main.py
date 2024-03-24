@@ -3,28 +3,33 @@ import requests
 from bs4 import BeautifulSoup
 import hashlib
 import os
+from pathlib import Path
+
+
+PROJECT_ROOT = str(Path(__file__).parent.parent.parent.parent)
+
 
 def get_html(url: str):
     response = requests.get(url, timeout=5)
     return response.text
 
 
-def setup_folder(folder: str = 'data') -> None:
+def setup_folder(folder: str = os.path.join(PROJECT_ROOT, 'data/faculty_secretary_faq')) -> None:
     if not os.path.exists(folder):
         os.makedirs(folder)
 
 
-def write_file(text: str, folder: str = 'data') -> None:
+def write_file(text: str, folder: str = os.path.join(PROJECT_ROOT, 'data/faculty_secretary_faq')) -> None:
     md5_hash = hashlib.md5(text.encode()).hexdigest()
     with open(f"{folder}/{md5_hash}.txt", "w", encoding="utf-8") as file:
         file.write(text)
 
 
 def assemble_text(button):
-    button_text = button.get_text(strip=True)
+    button_text = button.get_text()
     next_div = button.find_next_sibling('div')
     if next_div:
-        div_text = next_div.get_text(strip=True)
+        div_text = next_div.get_text()
         anchors = next_div.find_all('a')
         href_values = [anchor['href'] for anchor in anchors]
         combined_text = div_text + "\n" + "\n".join(href_values)
@@ -39,7 +44,8 @@ def extract_texts(html) -> List[str]:
     return texts
 
 
-def main():
+def main(): # pragma: no cover
+    # functions are already tested
     url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
     html = get_html(url)
     texts = extract_texts(html)
@@ -47,5 +53,6 @@ def main():
     list(map(write_file, texts))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__": # pragma: no cover
+    # functions are already tested
     main()
