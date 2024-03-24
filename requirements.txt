@@ -10,6 +10,7 @@ beautifulsoup4==4.12.3
 build==1.1.1
 cachetools==5.3.3
 certifi==2024.2.2
+cffi==1.16.0
 charset-normalizer==3.3.2
 chroma-hnswlib==0.7.3
 chromadb==0.4.24
@@ -17,6 +18,7 @@ click==8.1.7
 colorama==0.4.6
 coloredlogs==15.0.1
 coverage==7.4.4
+cryptography==42.0.5
 dataclasses-json==0.6.4
 Deprecated==1.2.14
 distro==1.9.0
@@ -79,6 +81,7 @@ protobuf==4.25.3
 pulsar-client==3.4.0
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
+pycparser==2.21
 pydantic==2.6.4
 pydantic_core==2.16.3
 PyPika==0.48.9

@@ -1,5 +1,5 @@
 import os
-import hashlib
+from cryptography.hazmat.primitives import hashes
 from typing import List
 from bs4 import BeautifulSoup
 import pytest
@@ -58,7 +58,9 @@ def test_setup_folder(folder: str):
 def test_write_file(folder: str, text: str):
     setup_folder(folder=folder)
     write_file(text=text, folder=folder)
-    file_name = hashlib.md5(text.encode()).hexdigest()
+    digest = hashes.Hash(hashes.SHA256())
+    digest.update(text.encode())
+    file_name = digest.finalize().hex()
     file_path = f'{folder}/{file_name}.txt'
     assert os.path.exists(file_path)
     shutil.rmtree(folder)
