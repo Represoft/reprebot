@@ -94,12 +94,14 @@ Reprebot relies on the following dependencies:
 - `chromadb`
 - `coverage`
 - `cryptography`
+- `fastapi`
 - `Jinja2`
 - `langchain`
 - `langchain-openai`
 - `pytest`
 - `requests`
 - `transformers`
+- `uvicorn`
 
 For a comprehensive list of dependencies, including both direct and transitive
 dependencies, please refer to the `requirements.txt` file.

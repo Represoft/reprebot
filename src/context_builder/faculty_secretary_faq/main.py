@@ -3,11 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 from cryptography.hazmat.primitives import hashes
 import os
-from pathlib import Path
-
-
-PROJECT_ROOT = str(Path(__file__).parent.parent.parent.parent)
-
+import sys
+sys.path.append('../../..')
+from src.constants import PROJECT_ROOT
 
 def get_html(url: str):
     response = requests.get(url, timeout=5)
