@@ -77,7 +77,7 @@ def query(
         model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig
     ):
     retriever = setup_retriever()
-    prompt = setup_prompt(messages=[""])
+    prompt = setup_prompt(messages=[("human", "query: {input}")])
     model = setup_model(model_config=model_config)
     chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
     response = chain.invoke(user_input)
