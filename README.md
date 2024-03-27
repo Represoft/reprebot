@@ -80,7 +80,7 @@ There are various ways to contribute to **Reprebot**:
 12. Now your ready to start sending your contributions. See this
     [guide](https://github.com/Represoft/reprebot/blob/main/CONTRIBUTING.md).
 
-### To run the context builder scripts:
+### To run the context builder scripts
 
 1. Navigate to the folder of the script you want to run.
 2. Execute the `main.py` script.
@@ -92,15 +92,16 @@ cd src/context_builder/faculty_secretary_faq
 py main.py
 ```
 
-### To start the API:
+### To start the API
 
 1. Navigate to the `api` module folder.
 2. Start the web service.
 
-```sh
-cd src/api
-uvicorn main:app --reload
-```
+    ```sh
+    cd src/api
+    uvicorn main:app --reload
+    ```
+
 3. You can test the API endpoint at `http://127.0.0.1:8000`.
 
 ## Technical Details ⚙️
