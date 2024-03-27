@@ -12,11 +12,11 @@ To send your contributions follow these steps:
 
 3. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) your fork:
 
-```sh
-git clone https://github.com/{your-username}/reprebot.git
-```
+   ```sh
+   git clone https://github.com/{your-username}/reprebot.git
+   ```
 
-Owners can clone the repository directly instead of fork it.
+   Owners can clone the repository directly instead of fork it.
 
 4. Set up the development environment:
 
@@ -34,75 +34,75 @@ Owners can clone the repository directly instead of fork it.
 
 5. Create a branch with the following naming convention:
 
-```sh
-reprebot-<your-github-username>
-```
+   ```sh
+   reprebot-<your-github-username>
+   ```
 
-For example if your GitHub username is `happy-cat`, name your branch
-`reprebot-happy-cat`.
+   For example if your GitHub username is `happy-cat`, name your branch
+   `reprebot-happy-cat`.
 
-Create and switch to your branch:
+   Create and switch to your branch:
 
-```sh
-git checkout -b <your-branch-name>
-```
+   ```sh
+   git checkout -b <your-branch-name>
+   ```
 
 6. Code your idea. Make sure you run the unit tests each time and that they
    pass.
 
 7. Commit your changes locally.
 
-Use the following convention for your commit messages:
+   Use the following convention for your commit messages:
 
-```text
-reprebot/[type]: #[issue-number] [title]
+   ```text
+   reprebot/[type]: #[issue-number] [title]
 
-[body]
-```
+   [body]
+   ```
 
-For the type of your commit use any of the following depending on what've you
-implemented:
+   For the type of your commit use any of the following depending on what've you
+   implemented:
 
-- `feat`: if it's a new feature or enhancement in performance
-- `fix`: if it's a fix to a bug
-- `refac`: if it's a refactoring of some kind
-- `style`: if it's related to code style only
-- `test`: if it's adding or improving tests
+   - `feat`: if it's a new feature or enhancement in performance
+   - `fix`: if it's a fix to a bug
+   - `refac`: if it's a refactoring of some kind
+   - `style`: if it's related to code style only
+   - `test`: if it's adding or improving tests
 
-Here's an example of a commit message:
+   Here's an example of a commit message:
 
-```text
-reprebot/feat: #19 define the llm client class
+   ```text
+   reprebot/feat: #19 define the llm client class
 
-- define the `LLMClient` class
-- use `LLMClient` class in `app` module
-```
+   - define the `LLMClient` class
+   - use `LLMClient` class in `app` module
+   ```
 
 8. Rebase onto the `main` branch.
 
-Do this only if there are changes in the `main` branch.
+   Do this only if there are changes in the `main` branch.
 
-```sh
-# Switch to the 'main' branch
-git checkout main
+   ```sh
+   # Switch to the 'main' branch
+   git checkout main
 
-# Pull latest changes from the 'main' branch
-git pull
+   # Pull latest changes from the 'main' branch
+   git pull
 
-# Switch to your branch branch
-git checkout <your-branch-name>
+   # Switch to your branch branch
+   git checkout <your-branch-name>
 
-# Rebase your branch branch onto 'main'
-git rebase main
-```
+   # Rebase your branch branch onto 'main'
+   git rebase main
+   ```
 
-Fix any conflict that might arise during the rebase.
+   Fix any conflict that might arise during the rebase.
 
 9. Push your changes to your branch.
 
-```sh
-git push --set-upstream origin <your-branch-name>
-```
+   ```sh
+   git push --set-upstream origin <your-branch-name>
+   ```
 
 10. Wait for the pipelines to succeed.
 
