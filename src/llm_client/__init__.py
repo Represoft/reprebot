@@ -14,18 +14,30 @@ from .types import (
     FakeModelConfig,
     HuggingFaceModelConfig,
 )
+import sys
+sys.path.append('../..')
+from src.vector_store import setup_retriever
+
+
+MESSAGES = [
+    ("system", "Use the context to give an accurate answer to the user query."),
+    ("system", "context: {context}"),
+    ("user", "query: {input}"),
+]
+
 
 def setup_gpt_model(model_config: GPTModelConfig): # pragma: no cover
     model = ChatOpenAI(
-        api_key=os.environ.get("OPENAI_API_KEY"),
         model_name=model_config.model_name,
         temperature=model_config.temperature
     )
     return model
 
+
 def setup_fake_model(model_config: FakeModelConfig):
     model = FakeListChatModel(responses=model_config.responses)
     return model
+
 
 def setup_hugging_face_model(model_config: HuggingFaceModelConfig):
     llm = HuggingFaceEndpoint(
@@ -35,6 +47,7 @@ def setup_hugging_face_model(model_config: HuggingFaceModelConfig):
     )
     model = ChatHuggingFace(llm=llm)
     return model
+
 
 def setup_model(
         model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig
@@ -48,6 +61,7 @@ def setup_model(
         model = setup_hugging_face_model(model_config=model_config)
     return model
 
+
 def setup_chain(retriever, prompt, model):
     chain = (
         {
@@ -60,24 +74,23 @@ def setup_chain(retriever, prompt, model):
     )
     return chain
 
+
 def setup_prompt(messages):
     prompt = ChatPromptTemplate.from_messages(messages)
     return prompt
 
-def setup_retriever():
-    # Empty retriever for testing
-    retriever = Chroma.from_documents(
-        documents=[Document(page_content="")],
-        embedding=FakeEmbeddings(size=1),
-    ).as_retriever(search_kwargs={"k": 1})
-    return retriever
 
 def query(
         user_input: str,
         model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig
     ):
-    retriever = setup_retriever()
-    prompt = setup_prompt(messages=[("human", "query: {input}")])
+    # we temporarily return vector db to check if docs are being retrieved
+    retriever, vector_db = setup_retriever()
+    docs = vector_db.similarity_search(user_input)
+    # no docs are being retrieved yet for some reason
+    # we need to check if it's something related to the chunking technique
+    print(docs)
+    prompt = setup_prompt(messages=MESSAGES)
     model = setup_model(model_config=model_config)
     chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
     response = chain.invoke(user_input)

@@ -37,6 +37,7 @@ def test_get_html(url: str):
     html = get_html(url=url)
     assert html is not None
 
+
 @pytest.mark.parametrize(
     ("folder"),
     [

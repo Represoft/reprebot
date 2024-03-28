@@ -17,4 +17,5 @@ async def query(query):
         user_input=query,
         model_config=model_config
     )
+    print(response)
     return response
