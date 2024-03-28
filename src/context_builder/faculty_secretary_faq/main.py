@@ -5,19 +5,23 @@ from cryptography.hazmat.primitives import hashes
 import os
 import sys
 sys.path.append('../../..')
-from src.constants import PROJECT_ROOT
+from src.constants import CONTEXT_DATA_PATHS
+
+
+FOLDER = CONTEXT_DATA_PATHS["faculty_secretary_faq"]
+
 
 def get_html(url: str):
     response = requests.get(url, timeout=5)
     return response.text
 
 
-def setup_folder(folder: str = os.path.join(PROJECT_ROOT, 'data/faculty_secretary_faq')) -> None:
+def setup_folder(folder: str = FOLDER) -> None:
     if not os.path.exists(folder):
         os.makedirs(folder)
 
 
-def write_file(text: str, folder: str = os.path.join(PROJECT_ROOT, 'data/faculty_secretary_faq')) -> None:
+def write_file(text: str, folder: str = FOLDER) -> None:
     digest = hashes.Hash(hashes.SHA256())
     digest.update(text.encode())
     file_name = digest.finalize().hex()
