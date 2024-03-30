@@ -100,7 +100,6 @@ def setup_retriever(config: VectorStoreConfig) -> VectorStoreRetriever:
         return setup_full_retriever(embedding_function)
 
 
-
 # to be accessed from admin CRUD view at some point
 def reset_vector_database() -> None:
     if os.path.exists(VECTOR_DATABASE_PATH):
