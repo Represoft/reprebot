@@ -9,6 +9,7 @@ from langchain_openai import OpenAIEmbeddings
 import shutil
 from langchain_core.vectorstores import VectorStoreRetriever
 import sys
+from src.vector_store.types import VectorStoreConfig
 sys.path.append('../..')
 from src.constants import VECTOR_DATABASE_PATH
 from src.constants import CONTEXT_DATA_PATHS
@@ -63,25 +64,41 @@ def setup_vector_database(chunked_documents, embedding_function) -> Chroma:
     return vector_db
 
 
-def setup_empty_retriever() -> VectorStoreRetriever:
-    retriever = Chroma.from_documents(
+def setup_empty_retriever(embedding_function) -> VectorStoreRetriever:
+    vector_db = Chroma.from_documents(
         documents=[Document(page_content="")],
-        embedding=FakeEmbeddings(size=1),
-    ).as_retriever(search_kwargs={"k": 1})
-    return retriever
+        embedding=embedding_function,
+    )
+    retriever = vector_db.as_retriever(search_kwargs={"k": 1})
+    return retriever, vector_db
 
 
-def setup_retriever(config = None) -> VectorStoreRetriever:
+def setup_full_retriever(embedding_function) -> VectorStoreRetriever:
     # load documents
     documents = load_documents_from_folders()
     # chunk documents
     chunked_documents = chunk_documents(documents)
     # set up vector db
-    embedding_function = OpenAIEmbeddings()
     vector_db = setup_vector_database(chunked_documents, embedding_function)
     # generate retriever
     retriever = vector_db.as_retriever()
     return retriever, vector_db
+
+
+def setup_embeddings(config: VectorStoreConfig):
+    if config.embeddings == "FAKE":
+        return FakeEmbeddings(size=1)
+    if config.embeddings == "OPENAI":
+        return OpenAIEmbeddings()
+
+
+def setup_retriever(config: VectorStoreConfig) -> VectorStoreRetriever:
+    embedding_function = setup_embeddings(config)
+    if config.retriever == "EMPTY":
+        return setup_empty_retriever(embedding_function)
+    if config.retriever == "FULL":
+        return setup_full_retriever(embedding_function)
+
 
 
 # to be accessed from admin CRUD view at some point
