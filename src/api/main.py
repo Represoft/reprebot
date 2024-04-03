@@ -23,5 +23,4 @@ async def query(query):
         model_config=model_config,
         vector_store_config=vector_store_config
     )
-    print(response)
     return response

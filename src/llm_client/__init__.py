@@ -84,11 +84,7 @@ def query(
         vector_store_config: VectorStoreConfig,
     ):
     # we temporarily return vector db to check if docs are being retrieved
-    retriever, vector_db = setup_retriever(config=vector_store_config)
-    docs = vector_db.similarity_search(user_input)
-    # no docs are being retrieved yet for some reason
-    # we need to check if it's something related to the chunking technique
-    print(docs)
+    retriever = setup_retriever(config=vector_store_config)
     prompt = setup_prompt(messages=MESSAGES)
     model = setup_model(model_config=model_config)
     chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
