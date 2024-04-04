@@ -22,7 +22,7 @@ response = query(
     vector_store_config=vector_store_config
 )
 
-print(response)
+print(response, "\n")
 
 response = query(
     user_input="""
@@ -33,4 +33,26 @@ response = query(
     vector_store_config=vector_store_config
 )
 
-print(response)
+print(response, "\n")
+
+
+response = query(
+    user_input="""
+        ¿Cuándo puedo cancelar materias? Tienes enlaces relacionados con este proceso?
+    """,
+    model_config=model_config,
+    vector_store_config=vector_store_config
+)
+
+print(response, "\n")
+
+
+response = query(
+    user_input="""
+        ¿Cuál es la diferencia entre práctica y pasantía?
+    """,
+    model_config=model_config,
+    vector_store_config=vector_store_config
+)
+
+print(response, "\n")
