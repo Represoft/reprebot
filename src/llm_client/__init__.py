@@ -19,6 +19,7 @@ from src.vector_store import setup_retriever
 
 MESSAGES = [
     ("system", "Use the context to give an accurate answer to the user query."),
+    ("system", "If you find any URL in the context, include them in your response."),
     ("system", "context: {context}"),
     ("user", "query: {input}"),
 ]
@@ -85,6 +86,9 @@ def query(
     ):
     # we temporarily return vector db to check if docs are being retrieved
     retriever = setup_retriever(config=vector_store_config)
+    # we will find a feature to return information about the sources
+    # for enhanced transparency and to check if there are any hallucinations
+    # docs = retriever.get_relevant_documents(query=user_input)
     prompt = setup_prompt(messages=MESSAGES)
     model = setup_model(model_config=model_config)
     chain = setup_chain(retriever=retriever, prompt=prompt, model=model)

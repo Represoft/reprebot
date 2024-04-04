@@ -70,7 +70,7 @@ def test_write_file(folder: str, text: str):
 @pytest.mark.parametrize(
     ("_text"),
     [
-        ("Button 1\nContent 1 Link 1\nlink1\n"),
+        ("Button 1\n\nContent 1 Link 1\n\nENLACES:\n[Link 1](link1)\n"),
     ],
 )
 def test_assemble_text(_text: str):
@@ -84,12 +84,13 @@ def test_assemble_text(_text: str):
     [
         (
             [
-                "Button 1\nContent 1 Link 1\nlink1\n",
-                "Button 2\nContent 2 Link 2\nlink2\n",
+                "Button 1\n\nContent 1 Link 1\n\nENLACES:\n[Link 1](link1)\n",
+                "Button 2\n\nContent 2 Link 2\n\nENLACES:\n[Link 2](link2)\n",
             ]
         ),
     ],
 )
 def test_extract_texts(_texts: List[str]):
     texts = extract_texts(html=MOCK_HTML)
+    print(texts)
     assert texts == _texts

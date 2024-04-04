@@ -6,6 +6,7 @@ import os
 import sys
 sys.path.append('../../..')
 from src.constants import CONTEXT_DATA_PATHS
+import re
 
 
 FOLDER = CONTEXT_DATA_PATHS["faculty_secretary_faq"]
@@ -29,15 +30,24 @@ def write_file(text: str, folder: str = FOLDER) -> None:
         file.write(text)
 
 
+def format_text(text: str) -> str:
+    formatted_text = re.sub(r'\s+', ' ', text).strip()
+    return formatted_text
+
+
 def assemble_text(button):
-    button_text = button.get_text()
+    button_text = format_text(button.get_text())
     next_div = button.find_next_sibling('div')
     if next_div:
-        div_text = next_div.get_text()
+        div_text = format_text(next_div.get_text())
         anchors = next_div.find_all('a')
-        href_values = [anchor['href'] for anchor in anchors]
-        combined_text = div_text + "\n" + "\n".join(href_values)
-        text = f"{button_text}\n{combined_text}\n"
+        href_text = "\n".join([
+            f"[{format_text(anchor.get_text())}]({anchor['href']})"
+            for anchor in anchors
+        ])
+        href_text = "\n\nENLACES:\n" + href_text if len(href_text) > 0 else href_text
+        combined_text = f"{div_text}{href_text}"
+        text = f"{button_text}\n\n{combined_text}\n"
         return text
 
 
