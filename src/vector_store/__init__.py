@@ -24,14 +24,23 @@ def load_documents_from_file(filepath: str) -> List[Document]:
 
 def load_documents_from_folders() -> List[Document]:
     documents = []
-    for path in CONTEXT_DATA_PATHS.values():
+    metadata = []
+    for group, path in CONTEXT_DATA_PATHS.items():
         for filename in os.listdir(path):
             filepath = os.path.join(path, filename)
             documents.extend(load_documents_from_file(filepath))
+            metadata.append({
+                "filename": filename,
+                "group": group,
+            })
+    # set metadata to documents
+    for document, _metadata in zip(documents, metadata):
+        document.metadata = _metadata
     return documents
 
 
-def chunk_documents(documents: List[Document]) -> List[Document]:
+def chunk_documents(documents: List[Document]) -> List[Document]: # pragma: no cover
+    # we won't be using chunking anymore because it would conflict with CRUD idea
     text_splitter = RecursiveCharacterTextSplitter()
     chunked_documents = text_splitter.split_documents(documents)
     if len(chunked_documents) == 0:
@@ -39,12 +48,13 @@ def chunk_documents(documents: List[Document]) -> List[Document]:
     return chunked_documents
 
 
-def start_vector_database(chunked_documents, embedding_function) -> Chroma:
-    vector_db = Chroma.from_documents(
-        documents=chunked_documents,
-        embedding=embedding_function,
+def start_vector_database(documents, embedding_function) -> Chroma:
+    vector_db = Chroma(
+        embedding_function=embedding_function,
         persist_directory=VECTOR_DATABASE_PATH,
     )
+    ids = vector_db.add_documents(documents)
+    # ids will be stored in a database to later implement a CRUD for vectors
     vector_db.persist()
     return vector_db
 
@@ -57,10 +67,10 @@ def load_vector_database(embedding_function) -> Chroma:
     return vector_db
 
 
-def setup_vector_database(chunked_documents, embedding_function) -> Chroma:
+def setup_vector_database(documents, embedding_function) -> Chroma:
     vector_db = load_vector_database(embedding_function) \
         if os.path.exists(VECTOR_DATABASE_PATH) \
-        else start_vector_database(chunked_documents, embedding_function)
+        else start_vector_database(documents, embedding_function)
     return vector_db
 
 
@@ -77,9 +87,9 @@ def setup_full_retriever(embedding_function) -> VectorStoreRetriever:
     # load documents
     documents = load_documents_from_folders()
     # chunk documents
-    chunked_documents = chunk_documents(documents)
+    # chunked_documents = chunk_documents(documents)
     # set up vector db
-    vector_db = setup_vector_database(chunked_documents, embedding_function)
+    vector_db = setup_vector_database(documents, embedding_function)
     # generate retriever
     retriever = vector_db.as_retriever()
     return retriever

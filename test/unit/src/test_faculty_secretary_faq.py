@@ -92,5 +92,4 @@ def test_assemble_text(_text: str):
 )
 def test_extract_texts(_texts: List[str]):
     texts = extract_texts(html=MOCK_HTML)
-    print(texts)
     assert texts == _texts
