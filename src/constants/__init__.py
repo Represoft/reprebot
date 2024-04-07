@@ -4,6 +4,11 @@ import os
 PROJECT_ROOT = str(Path(__file__).parent.parent.parent)
 
 
+CONTEXT_DATA_GROUPS = [
+    "faculty_secretary_faq",
+]
+
+
 CONTEXT_DATA_PATHS = {
     "faculty_secretary_faq": os.path.join(
         PROJECT_ROOT, "data/faculty_secretary_faq/"

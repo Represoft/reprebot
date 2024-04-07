@@ -13,6 +13,8 @@ from src.vector_store.types import VectorStoreConfig
 sys.path.append('../..')
 from src.constants import VECTOR_DATABASE_PATH
 from src.constants import CONTEXT_DATA_PATHS
+from src.constants import CONTEXT_DATA_GROUPS
+from src.database import Database
 
 
 def load_documents_from_file(filepath: str) -> List[Document]:
@@ -31,7 +33,7 @@ def load_documents_from_folders() -> List[Document]:
             documents.extend(load_documents_from_file(filepath))
             metadata.append({
                 "filename": filename,
-                "group": group,
+                "group_id": CONTEXT_DATA_GROUPS.index(group),
             })
     # set metadata to documents
     for document, _metadata in zip(documents, metadata):
@@ -48,13 +50,19 @@ def chunk_documents(documents: List[Document]) -> List[Document]: # pragma: no c
     return chunked_documents
 
 
+def _push_metadata(ids, metadata):
+    database = Database(db_name="reprebot.db")
+    database.push(ids, metadata)
+
+
 def start_vector_database(documents, embedding_function) -> Chroma:
     vector_db = Chroma(
         embedding_function=embedding_function,
         persist_directory=VECTOR_DATABASE_PATH,
     )
     ids = vector_db.add_documents(documents)
-    # ids will be stored in a database to later implement a CRUD for vectors
+    metadata = [document.metadata for document in documents]
+    _push_metadata(ids, metadata)
     vector_db.persist()
     return vector_db
 
