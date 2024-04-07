@@ -1,8 +1,7 @@
 cobertura.xml
-
 data/
-
 vectordb/
+reprebot.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
