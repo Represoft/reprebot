@@ -48,7 +48,7 @@ async def document_get(filename: str = Query(None), document_id: str = Query(Non
         response = get_document_by_id(document_id)
     else:
         response = {
-            "error": "Either 'filename' or 'document_id' query parameter must be provided.",
+            "error": "Either 'filename' or 'document_id' parameter must be provided.",
         }
     return response
 
@@ -68,15 +68,15 @@ async def document_delete(document_id: str = Query(None)):
 
 
 @app.put("/document")
-async def document_delete(document_id: str = Query(None), page_content: str = Query(None)):
+async def document_put(document_id: str = Query(None), page_content: str = Query(None)):
     if document_id and page_content:
         document = Document(page_content=page_content)
-        return update_document(document_id, document, vector_store_config)
+        update_document(document_id, document, vector_store_config)
         response = {
             "success": document_id,
         }
     else:
         response = {
-            "error": "'document_id' and 'page_content' query parameters must be provided.",
+            "error": "'document_id' and 'page_content' parameters must be provided.",
         }
     return response
