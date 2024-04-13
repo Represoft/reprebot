@@ -27,12 +27,19 @@ class Database:
         self.connector.commit()
 
 
-    def _insert(self, data: list[tuple[str, str, str]]) -> None:
+    def _insert(self, data: list[tuple[str, str, int]]) -> None:
         self.cursor.executemany(
             "INSERT INTO documents VALUES (?, ?, ?)",
             data
         )
         self.connector.commit()
+
+
+    def get_id_by_filename(self, filename: str) -> str:
+        self.cursor.execute(f"SELECT id FROM documents WHERE filename='{filename}';")
+        result = self.cursor.fetchone()
+        _id = result[0]
+        return _id
 
 
     def push(self, ids, metadata) -> None:

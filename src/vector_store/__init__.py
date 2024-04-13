@@ -12,6 +12,7 @@ import sys
 from src.vector_store.types import VectorStoreConfig
 sys.path.append('../..')
 from src.constants import VECTOR_DATABASE_PATH
+from src.constants import DATABASE_PATH
 from src.constants import CONTEXT_DATA_PATHS
 from src.constants import CONTEXT_DATA_GROUPS
 from src.database import Database
@@ -51,7 +52,7 @@ def chunk_documents(documents: List[Document]) -> List[Document]: # pragma: no c
 
 
 def _push_metadata(ids, metadata):
-    database = Database(db_name="reprebot.db")
+    database = Database(db_name=DATABASE_PATH)
     database.push(ids, metadata)
 
 
@@ -122,3 +123,21 @@ def setup_retriever(config: VectorStoreConfig) -> VectorStoreRetriever:
 def reset_vector_database() -> None:
     if os.path.exists(VECTOR_DATABASE_PATH):
         shutil.rmtree(VECTOR_DATABASE_PATH)
+
+
+def get_document_by_filename(filename: str):
+    database = Database(db_name=DATABASE_PATH)
+    _id = database.get_id_by_filename(filename)
+    vector_db = Chroma(
+        persist_directory=VECTOR_DATABASE_PATH,
+    )
+    document = vector_db.get(_id)
+    return document
+
+
+def get_document_by_id(id: str):
+    vector_db = Chroma(
+        persist_directory=VECTOR_DATABASE_PATH,
+    )
+    document = vector_db.get(id)
+    return document
