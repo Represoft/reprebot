@@ -68,11 +68,16 @@ def start_vector_database(documents, embedding_function) -> Chroma:
     return vector_db
 
 
-def load_vector_database(embedding_function) -> Chroma:
-    vector_db = Chroma(
-        persist_directory=VECTOR_DATABASE_PATH,
-        embedding_function=embedding_function,
-    )
+def load_vector_database(embedding_function = None) -> Chroma:
+    if embedding_function is None:
+        vector_db = Chroma(
+            persist_directory=VECTOR_DATABASE_PATH,
+        )
+    else:
+        vector_db = Chroma(
+            persist_directory=VECTOR_DATABASE_PATH,
+            embedding_function=embedding_function,
+        )
     return vector_db
 
 
@@ -128,16 +133,30 @@ def reset_vector_database() -> None:
 def get_document_by_filename(filename: str):
     database = Database(db_name=DATABASE_PATH)
     _id = database.get_id_by_filename(filename)
-    vector_db = Chroma(
-        persist_directory=VECTOR_DATABASE_PATH,
-    )
+    vector_db = load_vector_database()
     document = vector_db.get(_id)
     return document
 
 
 def get_document_by_id(document_id: str):
-    vector_db = Chroma(
-        persist_directory=VECTOR_DATABASE_PATH,
-    )
+    vector_db = load_vector_database()
     document = vector_db.get(document_id)
     return document
+
+
+def delete_document(document_id: str):
+    vector_db = load_vector_database()
+    vector_db.delete([document_id])
+
+
+def update_document(document_id: str, document: Document, config: VectorStoreConfig):
+    embedding_function = setup_embeddings(config)
+    vector_db = load_vector_database(embedding_function=embedding_function)
+    old_document = vector_db.get(document_id)
+    document.metadata = old_document["metadatas"][0]
+    vector_db.update_document(document_id, document)
+    # re-calculate hash and rename txt file
+    # update database record filename
+
+# add document: receive document and group
+# store document, generate txt file from content, add record to db
