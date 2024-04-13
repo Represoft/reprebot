@@ -135,9 +135,9 @@ def get_document_by_filename(filename: str):
     return document
 
 
-def get_document_by_id(id: str):
+def get_document_by_id(document_id: str):
     vector_db = Chroma(
         persist_directory=VECTOR_DATABASE_PATH,
     )
-    document = vector_db.get(id)
+    document = vector_db.get(document_id)
     return document

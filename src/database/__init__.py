@@ -36,7 +36,7 @@ class Database:
 
 
     def get_id_by_filename(self, filename: str) -> str:
-        self.cursor.execute(f"SELECT id FROM documents WHERE filename='{filename}';")
+        self.cursor.execute("SELECT id FROM documents WHERE filename = ?", (filename,))
         result = self.cursor.fetchone()
         _id = result[0]
         return _id
