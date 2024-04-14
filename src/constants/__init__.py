@@ -24,3 +24,4 @@ CONTEXT_DATA_SOURCES = {
 
 VECTOR_DATABASE_PATH = os.path.join(PROJECT_ROOT, "vectordb/")
 DATABASE_PATH = os.path.join(PROJECT_ROOT, "reprebot.db")
+CONTEXT_DATA_PATH = os.path.join(PROJECT_ROOT, "data/")

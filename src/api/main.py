@@ -8,6 +8,7 @@ from src.vector_store import get_document_by_filename
 from src.vector_store import get_document_by_id
 from src.vector_store import delete_document
 from src.vector_store import update_document
+from src.vector_store import add_document
 from langchain.docstore.document import Document
 
 
@@ -78,5 +79,20 @@ async def document_put(document_id: str = Query(None), page_content: str = Query
     else:
         response = {
             "error": "'document_id' and 'page_content' parameters must be provided.",
+        }
+    return response
+
+
+@app.post("/document")
+async def document_post(page_content: str = Query(None), group_id: int = Query(None)):
+    if page_content and group_id is not None:
+        document = Document(page_content=page_content)
+        document_id = add_document(document, group_id, vector_store_config)
+        response = {
+            "success": document_id,
+        }
+    else:
+        response = {
+            "error": "'page_content' and 'group_id' parameters must be provided.",
         }
     return response
