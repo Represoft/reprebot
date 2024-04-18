@@ -4,11 +4,11 @@ sys.path.append('../..')
 from src.llm_client import query
 from src.llm_client.types import GPTModelConfig
 from src.vector_store.types import VectorStoreConfig
-from src.vector_store import get_document_by_filename
-from src.vector_store import get_document_by_id
-from src.vector_store import delete_document
-from src.vector_store import update_document
-from src.vector_store import add_document
+from src.vector_store.crud import get_document_by_filename
+from src.vector_store.crud import get_document_by_id
+from src.vector_store.crud import delete_document
+from src.vector_store.crud import update_document
+from src.vector_store.crud import add_document
 from langchain.docstore.document import Document
 
 
