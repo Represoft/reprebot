@@ -57,9 +57,9 @@ async def document_get(filename: str = Query(None), document_id: str = Query(Non
 @app.delete("/document")
 async def document_delete(document_id: str = Query(None)):
     if document_id:
-        delete_document(document_id)
+        result = delete_document(document_id)
         response = {
-            "success": document_id,
+            "success": result,
         }
     else:
         response = {
@@ -72,9 +72,9 @@ async def document_delete(document_id: str = Query(None)):
 async def document_put(document_id: str = Query(None), page_content: str = Query(None)):
     if document_id and page_content:
         document = Document(page_content=page_content)
-        update_document(document_id, document, vector_store_config)
+        filename = update_document(document_id, document, vector_store_config)
         response = {
-            "success": document_id,
+            "filename": filename,
         }
     else:
         response = {
@@ -89,7 +89,7 @@ async def document_post(page_content: str = Query(None), group_id: int = Query(N
         document = Document(page_content=page_content)
         document_id = add_document(document, group_id, vector_store_config)
         response = {
-            "success": document_id,
+            "document_id": document_id,
         }
     else:
         response = {
