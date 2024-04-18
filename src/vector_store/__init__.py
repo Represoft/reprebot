@@ -9,7 +9,7 @@ from langchain_openai import OpenAIEmbeddings
 import shutil
 from langchain_core.vectorstores import VectorStoreRetriever
 import sys
-from src.vector_store.types import VectorStoreConfig
+from src.vector_store.types import DocumentResponse, VectorStoreConfig
 sys.path.append('../..')
 from src.constants import VECTOR_DATABASE_PATH
 from src.constants import DATABASE_PATH
@@ -132,21 +132,33 @@ def reset_vector_database() -> None:
         shutil.rmtree(VECTOR_DATABASE_PATH)
 
 
-def get_document_by_filename(filename: str):
+def get_document_by_filename(filename: str) -> DocumentResponse:
     database = Database(db_name=DATABASE_PATH)
     _id = database.get_id_by_filename(filename)
     vector_db = load_vector_database()
     document = vector_db.get(_id)
-    return document
+    response = DocumentResponse(
+        document_id=document["ids"][0],
+        filename=document["metadatas"][0]["filename"],
+        group_id=document["metadatas"][0]["group_id"],
+        page_content=document["documents"][0],
+    )
+    return response
 
 
-def get_document_by_id(document_id: str):
+def get_document_by_id(document_id: str) -> DocumentResponse:
     vector_db = load_vector_database()
     document = vector_db.get(document_id)
-    return document
+    response = DocumentResponse(
+        document_id=document["ids"][0],
+        filename=document["metadatas"][0]["filename"],
+        group_id=document["metadatas"][0]["group_id"],
+        page_content=document["documents"][0],
+    )
+    return response
 
 
-def delete_document(document_id: str):
+def delete_document(document_id: str) -> bool:
     vector_db = load_vector_database()
     # remove vector
     vector_db.delete([document_id])
@@ -159,6 +171,7 @@ def delete_document(document_id: str):
     os.remove(filepath)
     # remove db record
     database.delete(document_id)
+    return True
 
 
 def _write_file(text: str, folder: str) -> str:
@@ -170,7 +183,7 @@ def _write_file(text: str, folder: str) -> str:
     return f"{file_name}.txt"
 
 
-def update_document(document_id: str, document: Document, config: VectorStoreConfig):
+def update_document(document_id: str, document: Document, config: VectorStoreConfig) -> str:
     embedding_function = setup_embeddings(config)
     vector_db = load_vector_database(embedding_function=embedding_function)
     old_document = vector_db.get(document_id)
@@ -189,9 +202,10 @@ def update_document(document_id: str, document: Document, config: VectorStoreCon
     filename = _write_file(text, folder)
     # update database record filename
     database.update_filename(document_id, filename)
+    return filename
 
 
-def add_document(document: Document, group_id: int, config: VectorStoreConfig):
+def add_document(document: Document, group_id: int, config: VectorStoreConfig) -> str:
     embedding_function = setup_embeddings(config)
     vector_db = load_vector_database(embedding_function=embedding_function)
     # generate file
