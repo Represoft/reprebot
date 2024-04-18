@@ -92,6 +92,10 @@ cd src/context_builder/faculty_secretary_faq
 py main.py
 ```
 
+> [!NOTE]
+>Running these scripts will build the context that will be used by **Reprebot**
+to give you accurate responses.
+
 ### To start the API
 
 1. Navigate to the `api` module folder.
@@ -103,6 +107,19 @@ py main.py
     ```
 
 3. You can test the API endpoint at `http://127.0.0.1:8000`.
+
+### To start the application
+
+1. Make sure to start the API as explained before.
+2. Open another console window.
+3. Navigate to the `src` folder.
+4. Start the `streamlit` application.
+
+    ```sh
+    streamlit run src/app/main.py
+    ```
+
+5. You can interact with the application at `http://localhost:8501/`.
 
 ## Technical Details ⚙️
 
@@ -124,6 +141,7 @@ Reprebot relies on the following dependencies:
 - `langchain-openai`
 - `pytest`
 - `requests`
+- `streamlit`
 - `transformers`
 - `uvicorn`
 
