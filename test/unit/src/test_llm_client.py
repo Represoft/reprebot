@@ -34,8 +34,8 @@ def test_query_fake(user_input: str, responses: list[str]):
         model_config=model_config,
         vector_store_config=vector_store_config,
     )
-    assert isinstance(response, str)
-    assert response in responses
+    assert isinstance(response["response"], str)
+    assert response["response"] in responses
 
 
 @pytest.mark.skipif(
@@ -61,7 +61,7 @@ def test_query_hugging_face(user_input: str, repo_id: str):
         model_config=model_config,
         vector_store_config=vector_store_config,
     )
-    assert isinstance(response, str)
+    assert isinstance(response["response"], str)
 
 
 # comment next line if you want to run this test
@@ -89,5 +89,5 @@ def test_query_gpt(user_input: str, _word_to_check: str):
         model_config=model_config,
         vector_store_config=vector_store_config,
     )
-    assert isinstance(response, str)
-    assert _word_to_check in response
+    assert isinstance(response["response"], str)
+    assert _word_to_check in response["response"]

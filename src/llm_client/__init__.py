@@ -6,11 +6,14 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.chat_models.fake import FakeListChatModel
 from langchain_community.chat_models.huggingface import ChatHuggingFace
 from langchain_community.llms.huggingface_endpoint import HuggingFaceEndpoint
+from src.constants import CONTEXT_DATA_GROUPS, CONTEXT_DATA_SOURCES
 from src.vector_store.types import VectorStoreConfig
 from .types import (
     GPTModelConfig,
     FakeModelConfig,
     HuggingFaceModelConfig,
+    QueryResponse,
+    Source,
 )
 import sys
 sys.path.append('../..')
@@ -84,13 +87,23 @@ def query(
         model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig,
         vector_store_config: VectorStoreConfig,
     ):
-    # we temporarily return vector db to check if docs are being retrieved
     retriever = setup_retriever(config=vector_store_config)
-    # we will find a feature to return information about the sources
-    # for enhanced transparency and to check if there are any hallucinations
-    # docs = retriever.get_relevant_documents(query=user_input)
+    documents = retriever.get_relevant_documents(query=user_input)
+    sources = []
+    for document in documents:
+        page_content = document.page_content
+        group_id = document.metadata.get("group_id")
+        if group_id is not None:
+            source = CONTEXT_DATA_SOURCES[CONTEXT_DATA_GROUPS[group_id]]
+            sources.append(
+                Source(
+                    page_content=page_content,
+                    source=source
+                ),
+            )
     prompt = setup_prompt(messages=MESSAGES)
     model = setup_model(model_config=model_config)
     chain = setup_chain(retriever=retriever, prompt=prompt, model=model)
     response = chain.invoke(user_input)
-    return response
+    result = QueryResponse(response=response, sources=sources)
+    return result

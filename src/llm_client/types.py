@@ -1,4 +1,8 @@
 
+from typing import List, TypedDict
+from langchain.docstore.document import Document
+
+
 class GPTModelConfig: # pragma: no cover
     def __init__(self, model_name: str, temperature: float = 0.00):
         self.model_type: str = "gpt"
@@ -15,3 +19,13 @@ class HuggingFaceModelConfig:
         self.model_type: str = "hugging-face"
         self.repo_id = repo_id
         self.temperature = temperature
+
+
+class Source(TypedDict):
+    page_content: str
+    source: str
+
+
+class QueryResponse(TypedDict):
+    response: str
+    sources: List[Source]
