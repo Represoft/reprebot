@@ -16,7 +16,6 @@ CONTEXT_DATA_PATHS = {
 }
 
 
-# might be useful for CRUD
 CONTEXT_DATA_SOURCES = {
     "faculty_secretary_faq": "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
 }
