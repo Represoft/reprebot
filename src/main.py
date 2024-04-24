@@ -1,5 +1,6 @@
 import sys
-sys.path.append('..')
+
+sys.path.append("..")
 from src.llm_client import query
 from src.llm_client.types import GPTModelConfig
 from src.vector_store.types import VectorStoreConfig
@@ -19,7 +20,7 @@ response = query(
         de asignaturas sin pérdida de créditos?
     """,
     model_config=model_config,
-    vector_store_config=vector_store_config
+    vector_store_config=vector_store_config,
 )
 
 print(response, "\n")
@@ -30,7 +31,7 @@ response = query(
         sobre el valor de la matrícula?
     """,
     model_config=model_config,
-    vector_store_config=vector_store_config
+    vector_store_config=vector_store_config,
 )
 
 print(response, "\n")
@@ -41,7 +42,7 @@ response = query(
         ¿Cuándo puedo cancelar materias? Tienes enlaces relacionados con este proceso?
     """,
     model_config=model_config,
-    vector_store_config=vector_store_config
+    vector_store_config=vector_store_config,
 )
 
 print(response, "\n")
@@ -52,7 +53,7 @@ response = query(
         ¿Cuál es la diferencia entre práctica y pasantía?
     """,
     model_config=model_config,
-    vector_store_config=vector_store_config
+    vector_store_config=vector_store_config,
 )
 
 print(response, "\n")

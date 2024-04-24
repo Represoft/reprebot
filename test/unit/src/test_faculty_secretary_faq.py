@@ -53,7 +53,10 @@ def test_setup_folder(folder: str):
 @pytest.mark.parametrize(
     ("folder", "text"),
     [
-        (os.path.join(PROJECT_ROOT, "test/test-data/faculty_secretary_faq"), "Test content"),
+        (
+            os.path.join(PROJECT_ROOT, "test/test-data/faculty_secretary_faq"),
+            "Test content",
+        ),
     ],
 )
 def test_write_file(folder: str, text: str):
@@ -62,7 +65,7 @@ def test_write_file(folder: str, text: str):
     digest = hashes.Hash(hashes.SHA256())
     digest.update(text.encode())
     file_name = digest.finalize().hex()
-    file_path = f'{folder}/{file_name}.txt'
+    file_path = f"{folder}/{file_name}.txt"
     assert os.path.exists(file_path)
     shutil.rmtree(folder)
 
@@ -74,7 +77,7 @@ def test_write_file(folder: str, text: str):
     ],
 )
 def test_assemble_text(_text: str):
-    button = BeautifulSoup(MOCK_HTML, 'html.parser').find('button')
+    button = BeautifulSoup(MOCK_HTML, "html.parser").find("button")
     text = assemble_text(button=button)
     assert text == _text
 

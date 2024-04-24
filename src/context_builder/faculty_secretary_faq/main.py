@@ -4,7 +4,8 @@ from bs4 import BeautifulSoup
 from cryptography.hazmat.primitives import hashes
 import os
 import sys
-sys.path.append('../../..')
+
+sys.path.append("../../..")
 from src.constants import CONTEXT_DATA_PATHS
 import re
 
@@ -31,34 +32,38 @@ def write_file(text: str, folder: str = FOLDER) -> None:
 
 
 def format_text(text: str) -> str:
-    formatted_text = re.sub(r'\s+', ' ', text).strip()
+    formatted_text = re.sub(r"\s+", " ", text).strip()
     return formatted_text
 
 
 def assemble_text(button):
     button_text = format_text(button.get_text())
-    next_div = button.find_next_sibling('div')
+    next_div = button.find_next_sibling("div")
     if next_div:
         div_text = format_text(next_div.get_text())
-        anchors = next_div.find_all('a')
-        href_text = "\n".join([
-            f"[{format_text(anchor.get_text())}]({anchor['href']})"
-            for anchor in anchors
-        ])
-        href_text = "\n\nENLACES:\n" + href_text if len(href_text) > 0 else href_text
+        anchors = next_div.find_all("a")
+        href_text = "\n".join(
+            [
+                f"[{format_text(anchor.get_text())}]({anchor['href']})"
+                for anchor in anchors
+            ]
+        )
+        href_text = (
+            "\n\nENLACES:\n" + href_text if len(href_text) > 0 else href_text
+        )
         combined_text = f"{div_text}{href_text}"
         text = f"{button_text}\n\n{combined_text}\n"
         return text
 
 
 def extract_texts(html) -> List[str]:
-    soup = BeautifulSoup(html, 'html.parser')
-    buttons = soup.find_all('button', class_='accordion')
+    soup = BeautifulSoup(html, "html.parser")
+    buttons = soup.find_all("button", class_="accordion")
     texts = list(map(assemble_text, buttons))
     return texts
 
 
-def main(): # pragma: no cover
+def main():  # pragma: no cover
     # functions are already tested
     url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
     html = get_html(url)
@@ -67,6 +72,6 @@ def main(): # pragma: no cover
     list(map(write_file, texts))
 
 
-if __name__ == "__main__": # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     # functions are already tested
     main()

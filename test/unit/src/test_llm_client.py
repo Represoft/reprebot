@@ -40,7 +40,7 @@ def test_query_fake(user_input: str, responses: list[str]):
 
 @pytest.mark.skipif(
     os.environ.get("HUGGINGFACEHUB_API_TOKEN") is None,
-    reason="HUGGINGFACEHUB_API_TOKEN is not available"
+    reason="HUGGINGFACEHUB_API_TOKEN is not available",
 )
 @pytest.mark.parametrize(
     ("user_input", "repo_id"),
@@ -68,7 +68,7 @@ def test_query_hugging_face(user_input: str, repo_id: str):
 @pytest.mark.skip()
 @pytest.mark.skipif(
     os.environ.get("OPENAI_API_KEY") is None,
-    reason="OPENAI_API_KEY is not available"
+    reason="OPENAI_API_KEY is not available",
 )
 @pytest.mark.parametrize(
     ("user_input", "_word_to_check"),
