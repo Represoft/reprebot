@@ -9,7 +9,8 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_core.vectorstores import VectorStoreRetriever
 import sys
 from src.vector_store.types import VectorStoreConfig
-sys.path.append('../..')
+
+sys.path.append("../..")
 from src.constants import VECTOR_DATABASE_PATH
 from src.constants import DATABASE_PATH
 from src.constants import CONTEXT_DATA_PATHS
@@ -31,17 +32,21 @@ def load_documents_from_folders() -> List[Document]:
         for filename in os.listdir(path):
             filepath = os.path.join(path, filename)
             documents.extend(load_documents_from_file(filepath))
-            metadata.append({
-                "filename": filename,
-                "group_id": CONTEXT_DATA_GROUPS.index(group),
-            })
+            metadata.append(
+                {
+                    "filename": filename,
+                    "group_id": CONTEXT_DATA_GROUPS.index(group),
+                }
+            )
     # set metadata to documents
     for document, _metadata in zip(documents, metadata):
         document.metadata = _metadata
     return documents
 
 
-def chunk_documents(documents: List[Document]) -> List[Document]: # pragma: no cover
+def chunk_documents(
+    documents: List[Document],
+) -> List[Document]:  # pragma: no cover
     # we won't be using chunking anymore because it would conflict with CRUD idea
     text_splitter = RecursiveCharacterTextSplitter()
     chunked_documents = text_splitter.split_documents(documents)
@@ -67,7 +72,7 @@ def start_vector_database(documents, embedding_function) -> Chroma:
     return vector_db
 
 
-def load_vector_database(embedding_function = None) -> Chroma:
+def load_vector_database(embedding_function=None) -> Chroma:
     if embedding_function is None:
         vector_db = Chroma(
             persist_directory=VECTOR_DATABASE_PATH,
@@ -81,9 +86,11 @@ def load_vector_database(embedding_function = None) -> Chroma:
 
 
 def setup_vector_database(documents, embedding_function) -> Chroma:
-    vector_db = load_vector_database(embedding_function) \
-        if os.path.exists(VECTOR_DATABASE_PATH) \
+    vector_db = (
+        load_vector_database(embedding_function)
+        if os.path.exists(VECTOR_DATABASE_PATH)
         else start_vector_database(documents, embedding_function)
+    )
     return vector_db
 
 

@@ -16,22 +16,29 @@ from .types import (
     Source,
 )
 import sys
-sys.path.append('../..')
+
+sys.path.append("../..")
 from src.vector_store import setup_retriever
 
 
 MESSAGES = [
-    ("system", "Use the context to give an accurate answer to the user query."),
-    ("system", "If you find any URL in the context, include them in your response."),
+    (
+        "system",
+        "Use the context to give an accurate answer to the user query.",
+    ),
+    (
+        "system",
+        "If you find any URL in the context, include them in your response.",
+    ),
     ("system", "context: {context}"),
     ("user", "query: {input}"),
 ]
 
 
-def setup_gpt_model(model_config: GPTModelConfig): # pragma: no cover
+def setup_gpt_model(model_config: GPTModelConfig):  # pragma: no cover
     model = ChatOpenAI(
         model_name=model_config.model_name,
-        temperature=model_config.temperature
+        temperature=model_config.temperature,
     )
     return model
 
@@ -52,10 +59,10 @@ def setup_hugging_face_model(model_config: HuggingFaceModelConfig):
 
 
 def setup_model(
-        model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig
-    ):
+    model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig,
+):
     model = None
-    if model_config.model_type == "gpt": # pragma: no cover
+    if model_config.model_type == "gpt":  # pragma: no cover
         model = setup_gpt_model(model_config=model_config)
     elif model_config.model_type == "fake":
         model = setup_fake_model(model_config=model_config)
@@ -83,10 +90,10 @@ def setup_prompt(messages):
 
 
 def query(
-        user_input: str,
-        model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig,
-        vector_store_config: VectorStoreConfig,
-    ):
+    user_input: str,
+    model_config: GPTModelConfig | FakeModelConfig | HuggingFaceModelConfig,
+    vector_store_config: VectorStoreConfig,
+):
     retriever = setup_retriever(config=vector_store_config)
     documents = retriever.get_relevant_documents(query=user_input)
     sources = []
@@ -96,10 +103,7 @@ def query(
         if group_id is not None:
             source = CONTEXT_DATA_SOURCES[CONTEXT_DATA_GROUPS[group_id]]
             sources.append(
-                Source(
-                    page_content=page_content,
-                    source=source
-                ),
+                Source(page_content=page_content, source=source),
             )
     prompt = setup_prompt(messages=MESSAGES)
     model = setup_model(model_config=model_config)

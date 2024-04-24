@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Query
 import sys
-sys.path.append('../..')
+
+sys.path.append("../..")
 from src.llm_client import query
 from src.llm_client.types import GPTModelConfig
 from src.vector_store.types import VectorStoreConfig
@@ -32,7 +33,7 @@ async def query_get(q: str = Query(None)):
         response = query(
             user_input=q,
             model_config=model_config,
-            vector_store_config=vector_store_config
+            vector_store_config=vector_store_config,
         )
     else:
         response = {
@@ -42,7 +43,9 @@ async def query_get(q: str = Query(None)):
 
 
 @app.get("/document")
-async def document_get(filename: str = Query(None), document_id: str = Query(None)):
+async def document_get(
+    filename: str = Query(None), document_id: str = Query(None)
+):
     if filename:
         response = get_document_by_filename(filename)
     elif document_id:
@@ -69,7 +72,9 @@ async def document_delete(document_id: str = Query(None)):
 
 
 @app.put("/document")
-async def document_put(document_id: str = Query(None), page_content: str = Query(None)):
+async def document_put(
+    document_id: str = Query(None), page_content: str = Query(None)
+):
     if document_id and page_content:
         document = Document(page_content=page_content)
         filename = update_document(document_id, document, vector_store_config)
@@ -84,7 +89,9 @@ async def document_put(document_id: str = Query(None), page_content: str = Query
 
 
 @app.post("/document")
-async def document_post(page_content: str = Query(None), group_id: int = Query(None)):
+async def document_post(
+    page_content: str = Query(None), group_id: int = Query(None)
+):
     if page_content and group_id is not None:
         document = Document(page_content=page_content)
         document_id = add_document(document, group_id, vector_store_config)

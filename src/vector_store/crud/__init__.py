@@ -3,7 +3,8 @@ import os
 import shutil
 import sys
 from src.vector_store.types import DocumentResponse, VectorStoreConfig
-sys.path.append('../../..')
+
+sys.path.append("../../..")
 from src.constants import VECTOR_DATABASE_PATH
 from src.constants import DATABASE_PATH
 from src.constants import CONTEXT_DATA_GROUPS
@@ -72,7 +73,9 @@ def _write_file(text: str, folder: str) -> str:
     return f"{file_name}.txt"
 
 
-def update_document(document_id: str, document: Document, config: VectorStoreConfig) -> str:
+def update_document(
+    document_id: str, document: Document, config: VectorStoreConfig
+) -> str:
     embedding_function = setup_embeddings(config)
     vector_db = load_vector_database(embedding_function=embedding_function)
     old_document = vector_db.get(document_id)
@@ -94,7 +97,9 @@ def update_document(document_id: str, document: Document, config: VectorStoreCon
     return filename
 
 
-def add_document(document: Document, group_id: int, config: VectorStoreConfig) -> str:
+def add_document(
+    document: Document, group_id: int, config: VectorStoreConfig
+) -> str:
     embedding_function = setup_embeddings(config)
     vector_db = load_vector_database(embedding_function=embedding_function)
     # generate file
