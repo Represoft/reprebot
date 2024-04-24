@@ -61,7 +61,7 @@ There are various ways to contribute to **Reprebot**:
   and peers about its capabilities and benefits within the Faculty of
   Engineering community.
 
-## How to Get Started?
+## How to Get Started? 🏃‍♀️
 
 1. Install [Python](https://www.python.org/downloads/).
 2. Install [Git](https://git-scm.com/downloads).
@@ -121,7 +121,22 @@ to give you accurate responses.
 
 5. You can interact with the application at `http://localhost:8501/`.
 
+Here's an example:
+
+![reprebot chatbot example part 1](fig/reprebot-chatbot-example-part-1.jpeg)
+![reprebot chatbot example part 2](fig/reprebot-chatbot-example-part-2.jpeg)
+
 ## Technical Details ⚙️
+
+### Architecture 🏯
+
+The architecture of the system is summarized in the next figure.
+
+![reprebot architecture](fig/reprebot-architecture.png)
+
+The system is made up of a group of modules. Basically, the chatbot (app) calls the `[GET] query` endpoint of the API. The API then sends these requests to the LLM Client, which sets up the RAG chain. This is done using the Vector Store and the LLM model. The Vector Store stores embeddings created from Context Files. These Context Files are supposed to be stored locally on your computer. That's why, you'll need to run the context builder scripts first to generate them.
+
+The Vector Store uses an auxiliary Database that stores metadata about the documents. It also includes a submodule called CRUD. which is intended to be used by some kind of UI interface that allows admins to manage the documents. Some API endpoints were already built to manage these documents, but they're not in use yet.
 
 ### Programming Languages 🖥️
 
