@@ -1,6 +1,5 @@
 
 from typing import List, TypedDict
-from langchain.docstore.document import Document
 
 
 class GPTModelConfig: # pragma: no cover

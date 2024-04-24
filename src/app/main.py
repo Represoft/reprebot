@@ -1,6 +1,8 @@
 import streamlit as st
 import requests
 
+st.set_page_config(page_title="🤖 Reprebot")
+
 with st.sidebar:
     st.markdown(
         """<div align="center">
