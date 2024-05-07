@@ -10,7 +10,7 @@ from src.constants import CONTEXT_DATA_PATHS
 import re
 
 
-FOLDER = CONTEXT_DATA_PATHS["faculty_secretary_faq"]
+FOLDER = CONTEXT_DATA_PATHS["faculty_secretary_students_requests"]
 
 
 def get_html(url: str):
@@ -58,14 +58,34 @@ def assemble_text(button):
 
 def extract_texts(html) -> List[str]:
     soup = BeautifulSoup(html, "html.parser")
-    buttons = soup.find_all("button", class_="accordion")
-    texts = list(map(assemble_text, buttons))
-    return texts
+    sections = soup.find_all("h3", class_="subtitle_content")
+    all_texts = []
+
+    for section in sections:
+        section_name = format_text(section.get_text())
+        sibling = section.find_next_sibling("ul", class_="list_enumerate")
+        if sibling:
+            items = sibling.find_all(["li", "b"])
+            section_texts = []
+            for index, item in enumerate(items, start=1):
+                strong_tag = item.find(["strong", "b"])
+                if strong_tag:
+                    title = format_text(strong_tag.get_text())
+                    description = format_text(item.get_text())
+                    description = description.replace(title, "").strip()
+                    section_texts.append(f"{title}:\n{description}")
+                    file_name = f"{FOLDER}/{section_name}_{index}.txt"
+                    setup_folder(FOLDER)
+                    with open(file_name, "w", encoding="utf-8") as file:
+                        file.write(f"{title}:\n{description}")
+            all_texts.append("\n\n".join(section_texts))
+    
+    return all_texts
 
 
 def main():  # pragma: no cover
     # functions are already tested
-    url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
+    url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/solicitudes-estudiantiles.html"
     html = get_html(url)
     texts = extract_texts(html)
     setup_folder()
