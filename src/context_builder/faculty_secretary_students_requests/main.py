@@ -6,11 +6,12 @@ import os
 import sys
 
 sys.path.append("../../..")
-from src.constants import CONTEXT_DATA_PATHS
+from src.constants import CONTEXT_DATA_PATHS, CONTEXT_DATA_SOURCES
 import re
 
 
 FOLDER = CONTEXT_DATA_PATHS["faculty_secretary_students_requests"]
+URL = CONTEXT_DATA_SOURCES["faculty_secretary_students_requests"]
 
 
 def get_html(url: str):
@@ -36,57 +37,25 @@ def format_text(text: str) -> str:
     return formatted_text
 
 
-def assemble_text(button):
-    button_text = format_text(button.get_text())
-    next_div = button.find_next_sibling("div")
-    if next_div:
-        div_text = format_text(next_div.get_text())
-        anchors = next_div.find_all("a")
-        href_text = "\n".join(
-            [
-                f"[{format_text(anchor.get_text())}]({anchor['href']})"
-                for anchor in anchors
-            ]
-        )
-        href_text = (
-            "\n\nENLACES:\n" + href_text if len(href_text) > 0 else href_text
-        )
-        combined_text = f"{div_text}{href_text}"
-        text = f"{button_text}\n\n{combined_text}\n"
-        return text
-
-
 def extract_texts(html) -> List[str]:
     soup = BeautifulSoup(html, "html.parser")
     sections = soup.find_all("h3", class_="subtitle_content")
-    all_texts = []
-
+    texts = []
     for section in sections:
-        section_name = format_text(section.get_text())
+        section_text = format_text(section.get_text())
         sibling = section.find_next_sibling("ul", class_="list_enumerate")
         if sibling:
-            items = sibling.find_all(["li", "b"])
-            section_texts = []
-            for index, item in enumerate(items, start=1):
-                strong_tag = item.find(["strong", "b"])
-                if strong_tag:
-                    title = format_text(strong_tag.get_text())
-                    description = format_text(item.get_text())
-                    description = description.replace(title, "").strip()
-                    section_texts.append(f"{title}:\n{description}")
-                    file_name = f"{FOLDER}/{section_name}_{index}.txt"
-                    setup_folder(FOLDER)
-                    with open(file_name, "w", encoding="utf-8") as file:
-                        file.write(f"{title}:\n{description}")
-            all_texts.append("\n\n".join(section_texts))
-    
-    return all_texts
+            items = sibling.find_all("li")
+            for item in items:
+                item_text = format_text(item.get_text())
+                text = f"{section_text}: {item_text}"
+                texts.append(text)
+    return texts
 
 
 def main():  # pragma: no cover
     # functions are already tested
-    url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/solicitudes-estudiantiles.html"
-    html = get_html(url)
+    html = get_html(URL)
     texts = extract_texts(html)
     setup_folder()
     list(map(write_file, texts))
