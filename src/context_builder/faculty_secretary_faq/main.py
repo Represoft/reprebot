@@ -6,11 +6,12 @@ import os
 import sys
 
 sys.path.append("../../..")
-from src.constants import CONTEXT_DATA_PATHS
+from src.constants import CONTEXT_DATA_PATHS, CONTEXT_DATA_SOURCES
 import re
 
 
 FOLDER = CONTEXT_DATA_PATHS["faculty_secretary_faq"]
+URL = CONTEXT_DATA_SOURCES["faculty_secretary_faq"]
 
 
 def get_html(url: str):
@@ -65,8 +66,7 @@ def extract_texts(html) -> List[str]:
 
 def main():  # pragma: no cover
     # functions are already tested
-    url = "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/preguntas-frecuentes.html"
-    html = get_html(url)
+    html = get_html(URL)
     texts = extract_texts(html)
     setup_folder()
     list(map(write_file, texts))
