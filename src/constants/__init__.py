@@ -18,6 +18,6 @@ CONTEXT_DATA_SOURCES = {
     "faculty_secretary_students_requests": "https://ingenieria.bogota.unal.edu.co/es/dependencias/secretaria-academica/solicitudes-estudiantiles.html",
 }
 
-VECTOR_DATABASE_PATH = os.path.join(PROJECT_ROOT, "vectordb/")
+VECTOR_DATABASE_PATH = os.path.join(PROJECT_ROOT, "../vectordb/")
 DATABASE_PATH = os.path.join(PROJECT_ROOT, "reprebot.db")
 CONTEXT_DATA_PATH = os.path.join(PROJECT_ROOT, "data/")
