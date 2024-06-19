@@ -61,7 +61,30 @@ There are various ways to contribute to **Reprebot**:
   and peers about its capabilities and benefits within the Faculty of
   Engineering community.
 
-## How to Get Started? 🏃‍♀️
+## How to Run it with Docker? 🐋
+
+1. Make sure you have [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) installed on your machine.
+2. Navigate to the root of the project.
+3. Create a `.env` file and set the environment variables in it:
+
+    ```sh
+    OPENAI_API_KEY='YOUR_OPENAI_API_KEY'
+    API_HOST='api'
+    ```
+
+4. Build the Docker images by running:
+
+    ```sh
+    docker-compose build
+    ```
+
+5. Start the application with:
+
+    ```sh
+    docker-compose up
+    ```
+
+## How to Get Started Developing? 🏃‍♀️
 
 1. Install [Python](https://www.python.org/downloads/).
 2. Install [Git](https://git-scm.com/downloads).
@@ -112,7 +135,7 @@ to give you accurate responses.
 
 1. Make sure to start the API as explained before.
 2. Open another console window.
-3. Navigate to the `src` folder.
+3. Navigate to the root of the project.
 4. Start the `streamlit` application.
 
     ```sh
