@@ -1,5 +1,8 @@
 import streamlit as st
 import requests
+import os
+
+API_HOST = os.getenv("API_HOST", "localhost")
 
 st.set_page_config(page_title="🤖 Reprebot")
 
@@ -34,7 +37,7 @@ if prompt := st.chat_input():
     st.chat_message("user").write(prompt)
 
     response = requests.get(
-        "http://localhost:8000/query", params={"q": prompt}, timeout=12000
+        f"http://{API_HOST}:8000/query", params={"q": prompt}, timeout=12000
     )
     if response.status_code == 200:
         result = response.json()
