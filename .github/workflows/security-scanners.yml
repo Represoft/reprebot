@@ -1,0 +1,19 @@
+name: Security Scanning
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Run Trivy for vulnerability scanning
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@master # Official Trivy action
+        with:
+          scan-type: "fs"
+          ignore-unfixed: true
+          severity: "CRITICAL"
