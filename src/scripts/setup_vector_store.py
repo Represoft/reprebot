@@ -7,6 +7,9 @@ from src.vector_store import (
     load_documents_from_folders,
     setup_vector_database,
 )
+from dotenv import load_dotenv
+
+load_dotenv()
 
 config = VectorStoreConfig(
     embeddings="OPENAI",
