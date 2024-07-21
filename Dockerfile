@@ -17,5 +17,7 @@ EXPOSE 8501 8000
 ENV OPENAI_API_KEY=${OPENAI_API_KEY}
 ENV API_HOST=${API_HOST}
 
+RUN chmod +x /app/entrypoint.sh
+
 # Run the entrypoint script when the container launches
 ENTRYPOINT ["/app/entrypoint.sh"]
