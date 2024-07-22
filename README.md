@@ -68,7 +68,7 @@ There are various ways to contribute to **Reprebot**:
 3. Create a `.env` file and set the environment variables in it:
 
     ```sh
-    OPENAI_API_KEY='YOUR_OPENAI_API_KEY'
+    OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
     API_HOST='api'
     ```
 
@@ -103,6 +103,22 @@ There are various ways to contribute to **Reprebot**:
 12. Now your ready to start sending your contributions. See this
     [guide](https://github.com/Represoft/reprebot/blob/main/CONTRIBUTING.md).
 
+> [!NOTE]
+>If you have an `OPENAI_API_KEY` and want to use it to try out the application,
+you can set it as an environment variable on your computer or add it to a
+`.env` file in the root of this project:
+
+```sh
+OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+```
+
+### To quickly check that your `OPENAI_API_KEY` works
+
+1. Navigate to the `src` folder.
+2. Run the demo script by executing `py main.py`.
+
+This script asks four demo questions to the GPT model through the LLM Client. You can modify it as needed by adding more questions or choosing different models.
+
 ### To run the context builder scripts
 
 1. Navigate to the folder of the script you want to run.
@@ -112,6 +128,11 @@ For example:
 
 ```sh
 cd src/context_builder/faculty_secretary_faq
+py main.py
+```
+
+```sh
+cd src/context_builder/faculty_secretary_students_requests
 py main.py
 ```
 
@@ -142,12 +163,30 @@ to give you accurate responses.
     streamlit run src/app/main.py
     ```
 
+    >[!NOTE]
+    >If you've already set the `API_HOST=api` environment variable on your computer or in the `.env` file, remove it or set its value to `localhost`. The `API_HOST=api` is only needed when running
+    the application with docker.
+
 5. You can interact with the application at `http://localhost:8501/`.
 
 Here's an example:
 
 ![reprebot chatbot example part 1](fig/reprebot-chatbot-example-part-1.jpeg)
 ![reprebot chatbot example part 2](fig/reprebot-chatbot-example-part-2.jpeg)
+
+The first time you interact with the application, it automatically sets up the
+vector store for you. If you want to set up the vector store before using the
+application, navigate to the `src/scripts` folder and run:
+
+```sh
+py setup_vector_store.py
+```
+
+If you want to reset the vector store at any point, you can run:
+
+```sh
+py reset_vector_store.py
+```
 
 ## Technical Details ⚙️
 
