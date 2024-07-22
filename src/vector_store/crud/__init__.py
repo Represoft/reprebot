@@ -60,7 +60,7 @@ def delete_document(document_id: str) -> bool:
     filepath = os.path.join(CONTEXT_DATA_PATH, group, filename)
     os.remove(filepath)
     # remove db record
-    database.delete(document_id)
+    database.delete_document(document_id)
     return True
 
 
@@ -116,6 +116,6 @@ def add_document(
     ids = vector_db.add_documents([document])
     # create db record
     database = Database(db_name=DATABASE_PATH)
-    database.push(ids, [metadata])
+    database.push_documents(ids, [metadata])
     document_id = ids[0]
     return document_id

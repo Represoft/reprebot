@@ -57,7 +57,7 @@ def chunk_documents(
 
 def _push_metadata(ids, metadata):
     database = Database(db_name=DATABASE_PATH)
-    database.push(ids, metadata)
+    database.push_documents(ids, metadata)
 
 
 def start_vector_database(documents, embedding_function) -> Chroma:

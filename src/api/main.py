@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 import sys
 
 sys.path.append("../..")
@@ -11,6 +11,7 @@ from src.vector_store.crud import delete_document
 from src.vector_store.crud import update_document
 from src.vector_store.crud import add_document
 from langchain.docstore.document import Document
+from src.log import log_conversation
 
 
 app = FastAPI()
@@ -103,3 +104,26 @@ async def document_post(
             "error": "'page_content' and 'group_id' parameters must be provided.",
         }
     return response
+
+
+from pydantic import BaseModel
+from datetime import datetime
+
+class ConversationLog(BaseModel):
+    question: str
+    answer: str
+    timestamp: datetime = None
+    conversation_id: str = None
+
+@app.post("/conversation", response_model=dict)
+async def conversation_post(log: ConversationLog):
+    try:
+        result = log_conversation(
+            question=log.question,
+            answer=log.answer,
+            timestamp=log.timestamp,
+            conversation_id=log.conversation_id,
+        )
+        return {"success": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

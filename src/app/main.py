@@ -1,8 +1,13 @@
 import streamlit as st
 import requests
 import os
+import uuid
+from datetime import datetime
 
 API_HOST = os.getenv("API_HOST", "localhost")
+
+if "CONVERSATION_ID" not in st.session_state:
+    st.session_state["CONVERSATION_ID"] = str(uuid.uuid4())
 
 st.set_page_config(page_title="🤖 Reprebot")
 
@@ -36,6 +41,7 @@ if prompt := st.chat_input():
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").write(prompt)
 
+    # Send query to chatbot api
     response = requests.get(
         f"http://{API_HOST}:8000/query", params={"q": prompt}, timeout=12000
     )
@@ -45,10 +51,27 @@ if prompt := st.chat_input():
     else:
         msg = "Oops! Ha ocurrido un error :("
 
+    # Render chatbot response
     st.session_state.messages.append({"role": "assistant", "content": msg})
     st.chat_message("assistant").write(msg)
+
+    # Render used sources
     sources = result["sources"]
     for i, source in enumerate(sources):
         with st.expander(f"Fuente {i+1}"):
             st.write(source["page_content"])
             st.write(f"FUENTE: {source['source']}")
+
+    # Log conversation record
+    payload = {
+        "question": prompt,
+        "answer": msg,
+        "timestamp": datetime.now().isoformat(),
+        "conversation_id": st.session_state["CONVERSATION_ID"],
+    }
+
+    requests.post(
+        f"http://{API_HOST}:8000/conversation",
+        json=payload,
+        timeout=12000,
+    )

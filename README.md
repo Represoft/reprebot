@@ -163,8 +163,7 @@ to give you accurate responses.
     streamlit run src/app/main.py
     ```
 
-    >[!NOTE]
-    >If you've already set the `API_HOST=api` environment variable on your computer or in the `.env` file, remove it or set its value to `localhost`. The `API_HOST=api` is only needed when running
+    If you've already set the `API_HOST=api` environment variable on your computer or in the `.env` file, remove it or set its value to `localhost`. The `API_HOST=api` is only needed when running
     the application with docker.
 
 5. You can interact with the application at `http://localhost:8501/`.
@@ -188,6 +187,13 @@ If you want to reset the vector store at any point, you can run:
 py reset_vector_store.py
 ```
 
+### To generate the conversations log report
+
+1. Navigate to the `src/scripts` folder.
+2. Execute the script by running `py generate_conversations_log.py`
+
+The generated report will be a JSON file located in the `src/scripts` folder.
+
 ## Technical Details ⚙️
 
 ### Architecture 🏯
@@ -196,9 +202,11 @@ The architecture of the system is summarized in the next figure.
 
 ![reprebot architecture](fig/reprebot-architecture.png)
 
-The system is made up of a group of modules. Basically, the chatbot (app) calls the `[GET] query` endpoint of the API. The API then sends these requests to the LLM Client, which sets up the RAG chain. This is done using the Vector Store and the LLM model. The Vector Store stores embeddings created from Context Files. These Context Files are supposed to be stored locally on your computer. That's why, you'll need to run the context builder scripts first to generate them.
+The system is made up of a group of modules. Essentially, the chatbot (app) calls the `[GET] query` endpoint of the API. The API then sends these requests to the LLM Client, which sets up the RAG chain using the Vector Store and the LLM model. The Vector Store stores embeddings created from context files, which are supposed to be stored locally on your computer. Therefore, you'll need to run the context builder scripts first to generate them.
 
-The Vector Store uses an auxiliary Database that stores metadata about the documents. It also includes a submodule called CRUD. which is intended to be used by some kind of UI interface that allows admins to manage the documents. Some API endpoints were already built to manage these documents, but they're not in use yet.
+After receiving the response from the LLM Client, the app calls the `[POST] conversations` endpoint to log the question and the received response. This endpoint accesses the Log module to store the data. The purpose of this is to analyze the information and gain insights about the performance of the chatbot, check if it's hallucinating, and incorporate new sources of information that may be missing. These logs are stored in an auxiliary SQL database.
+
+The Vector Store also uses the auxiliary SQL database to store metadata about the documents. It includes a submodule called CRUD, which is intended to be used by a UI interface that allows admins to manage the documents. Some API endpoints were already built to manage these documents, but they are not in use yet.
 
 ### Programming Languages 🖥️
 
