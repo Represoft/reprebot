@@ -78,7 +78,7 @@ def test_query_hugging_face(user_input: str, repo_id: str):
 )
 def test_query_gpt(user_input: str, _word_to_check: str):
     model_config = GPTModelConfig(
-        model_name="gpt-3.5-turbo-0125",
+        model_name="gpt-4o-mini",
     )
     vector_store_config = VectorStoreConfig(
         retriever="FULL",
