@@ -6,7 +6,7 @@ from src.llm_client.types import GPTModelConfig
 from src.vector_store.types import VectorStoreConfig
 
 model_config = GPTModelConfig(
-    model_name="gpt-3.5-turbo-0125",
+    model_name="gpt-4o-mini",
 )
 
 vector_store_config = VectorStoreConfig(

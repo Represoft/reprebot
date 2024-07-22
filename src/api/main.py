@@ -17,7 +17,7 @@ app = FastAPI()
 
 
 model_config = GPTModelConfig(
-    model_name="gpt-3.5-turbo-0125",
+    model_name="gpt-4o-mini",
 )
 
 
