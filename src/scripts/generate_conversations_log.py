@@ -28,6 +28,7 @@ def generate_json_log(records, filename="conversations_log.json"):
 
     print(f"JSON log generated: {filename}")
 
+
 database = Database(db_name=DATABASE_PATH)
 records = database.get_conversations_log()
 generate_json_log(records)

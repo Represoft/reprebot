@@ -126,9 +126,9 @@ class Database:
             # Convert timestamp strings back to datetime objects
             converted_records = []
             for record in records:
-                id, question, answer, timestamp_str, conversation_id = record
+                _id, question, answer, timestamp_str, conversation_id = record
                 timestamp = datetime.fromisoformat(timestamp_str)
-                converted_records.append((id, question, answer, timestamp, conversation_id))
+                converted_records.append((_id, question, answer, timestamp, conversation_id))
 
             return converted_records
         except sqlite3.Error as e:
