@@ -17,6 +17,10 @@ from src.constants import CONTEXT_DATA_PATHS
 from src.constants import CONTEXT_DATA_GROUPS
 from src.database import Database
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 def load_documents_from_file(filepath: str) -> List[Document]:
     loader = TextLoader(filepath, encoding="utf8")

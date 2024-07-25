@@ -20,6 +20,10 @@ import sys
 sys.path.append("../..")
 from src.vector_store import setup_retriever
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 MESSAGES = [
     (
