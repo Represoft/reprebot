@@ -223,12 +223,11 @@ Reprebot relies on the following dependencies:
 - `fastapi`
 - `Jinja2`
 - `langchain`
+- `langchain-community`
 - `langchain-openai`
 - `pytest`
+- `python-dotenv`
 - `requests`
 - `streamlit`
 - `transformers`
 - `uvicorn`
-
-For a comprehensive list of dependencies, including both direct and transitive
-dependencies, please refer to the `requirements.txt` file.
