@@ -1,7 +1,0 @@
-{
-    formatPython = {
-        default = {
-        targets = ["/"];
-        };
-    };
-}
