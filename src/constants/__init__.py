@@ -9,8 +9,12 @@ CONTEXT_DATA_GROUPS = [
 ]
 
 CONTEXT_DATA_PATHS = {
-    "faculty_secretary_faq": os.path.join(PROJECT_ROOT, "../data/faculty_secretary_faq/"),
-    "faculty_secretary_students_requests": os.path.join(PROJECT_ROOT, "../data/faculty_secretary_students_requests/"),
+    "faculty_secretary_faq": os.path.join(
+        PROJECT_ROOT, "../data/faculty_secretary_faq/"
+    ),
+    "faculty_secretary_students_requests": os.path.join(
+        PROJECT_ROOT, "../data/faculty_secretary_students_requests/"
+    ),
 }
 
 CONTEXT_DATA_SOURCES = {

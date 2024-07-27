@@ -49,9 +49,7 @@ def assemble_text(button):
                 for anchor in anchors
             ]
         )
-        href_text = (
-            "\n\nENLACES:\n" + href_text if len(href_text) > 0 else href_text
-        )
+        href_text = "\n\nENLACES:\n" + href_text if len(href_text) > 0 else href_text
         combined_text = f"{div_text}{href_text}"
         text = f"{button_text}\n\n{combined_text}\n"
         return text

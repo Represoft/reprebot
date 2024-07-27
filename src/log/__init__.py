@@ -2,11 +2,9 @@ from datetime import datetime
 from src.database import Database
 from src.constants import DATABASE_PATH
 
+
 def log_conversation(
-    question: str,
-    answer: str,
-    timestamp: datetime,
-    conversation_id: str
+    question: str, answer: str, timestamp: datetime, conversation_id: str
 ) -> bool:
 
     database = Database(db_name=DATABASE_PATH)

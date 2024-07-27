@@ -44,9 +44,7 @@ async def query_get(q: str = Query(None)):
 
 
 @app.get("/document")
-async def document_get(
-    filename: str = Query(None), document_id: str = Query(None)
-):
+async def document_get(filename: str = Query(None), document_id: str = Query(None)):
     if filename:
         response = get_document_by_filename(filename)
     elif document_id:
@@ -73,9 +71,7 @@ async def document_delete(document_id: str = Query(None)):
 
 
 @app.put("/document")
-async def document_put(
-    document_id: str = Query(None), page_content: str = Query(None)
-):
+async def document_put(document_id: str = Query(None), page_content: str = Query(None)):
     if document_id and page_content:
         document = Document(page_content=page_content)
         filename = update_document(document_id, document, vector_store_config)
@@ -90,9 +86,7 @@ async def document_put(
 
 
 @app.post("/document")
-async def document_post(
-    page_content: str = Query(None), group_id: int = Query(None)
-):
+async def document_post(page_content: str = Query(None), group_id: int = Query(None)):
     if page_content and group_id is not None:
         document = Document(page_content=page_content)
         document_id = add_document(document, group_id, vector_store_config)
@@ -109,11 +103,13 @@ async def document_post(
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class ConversationLog(BaseModel):
     question: str
     answer: str
     timestamp: datetime = None
     conversation_id: str = None
+
 
 @app.post("/conversation", response_model=dict)
 async def conversation_post(log: ConversationLog):

@@ -2,6 +2,7 @@ import sqlite3
 from datetime import datetime
 from typing import List, Tuple
 
+
 class Database:
     def __init__(self, db_name: str) -> None:
         self.connector = None
@@ -49,9 +50,7 @@ class Database:
         self.connector.commit()
 
     def delete_document(self, document_id: str) -> None:
-        self.cursor.execute(
-            "DELETE FROM documents WHERE id = ?", (document_id,)
-        )
+        self.cursor.execute("DELETE FROM documents WHERE id = ?", (document_id,))
         self.connector.commit()
 
     def update_filename(self, document_id: str, filename: str) -> None:
@@ -65,9 +64,7 @@ class Database:
         self.connector.commit()
 
     def get_id_by_filename(self, filename: str) -> str:
-        self.cursor.execute(
-            "SELECT id FROM documents WHERE filename = ?", (filename,)
-        )
+        self.cursor.execute("SELECT id FROM documents WHERE filename = ?", (filename,))
         result = self.cursor.fetchone()
         _id = result[0]
         return _id
@@ -107,7 +104,9 @@ class Database:
             INSERT INTO conversations (question, answer, timestamp, conversation_id)
             VALUES (?, ?, ?, ?)
             """
-            self.cursor.execute(query, (question, answer, timestamp.isoformat(), conversation_id))
+            self.cursor.execute(
+                query, (question, answer, timestamp.isoformat(), conversation_id)
+            )
             self.connector.commit()
             return True
         except sqlite3.Error as e:
@@ -128,7 +127,9 @@ class Database:
             for record in records:
                 _id, question, answer, timestamp_str, conversation_id = record
                 timestamp = datetime.fromisoformat(timestamp_str)
-                converted_records.append((_id, question, answer, timestamp, conversation_id))
+                converted_records.append(
+                    (_id, question, answer, timestamp, conversation_id)
+                )
 
             return converted_records
         except sqlite3.Error as e:
