@@ -10,7 +10,7 @@ from src.vector_store import (
 
 config = VectorStoreConfig(
     embeddings="OPENAI",
-    retriever=None, # not needed
+    retriever=None,  # not needed
 )
 
 embedding_function = setup_embeddings(config)

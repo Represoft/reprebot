@@ -33,6 +33,7 @@ def sample_text_file(tmp_path):
     file_path.write_text("This is a sample text file.")
     return str(file_path)
 
+
 def test_load_documents_from_file(sample_text_file):
     documents = load_documents_from_file(sample_text_file)
     assert len(documents) == 1
@@ -61,6 +62,7 @@ def setup_test_directories(tmp_path):
     CONTEXT_DATA_PATHS.clear()
     CONTEXT_DATA_PATHS.update(original_paths)
 
+
 def test_load_documents_from_folders(setup_test_directories):
     documents = load_documents_from_folders()
 
@@ -86,6 +88,7 @@ def test_load_documents_from_folders(setup_test_directories):
     group_ids = set(doc.metadata["group_id"] for doc in documents)
     assert group_ids == set(range(len(CONTEXT_DATA_GROUPS)))
 
+
 @pytest.fixture
 def temp_db_path():
     db_file = tempfile.NamedTemporaryFile(delete=False)
@@ -93,30 +96,41 @@ def temp_db_path():
     db_file.close()
     os.remove(db_file.name)
 
+
 @pytest.fixture
 def temp_vector_db_path():
     vector_db_dir = tempfile.TemporaryDirectory()
     yield vector_db_dir.name
     vector_db_dir.cleanup()
 
+
 def test_chunk_documents():
     documents = [Document(page_content="This is a test document.")]
     chunked_documents = chunk_documents(documents)
     assert len(chunked_documents) > 0
 
+
 def test_start_vector_database(temp_db_path, temp_vector_db_path):
-    documents = [Document(page_content="This is a test document.", metadata={
-        "filename": "test_doc", "group_id": 1,
-    })]
+    documents = [
+        Document(
+            page_content="This is a test document.",
+            metadata={
+                "filename": "test_doc",
+                "group_id": 1,
+            },
+        )
+    ]
     embedding_function = FakeEmbeddings(size=1536)
     vector_db = start_vector_database(documents, embedding_function)
 
     assert isinstance(vector_db, Chroma)
     assert os.path.exists(temp_vector_db_path)
 
+
 def test_load_vector_database(temp_vector_db_path):
     vector_db = load_vector_database()
     assert isinstance(vector_db, Chroma)
+
 
 def test_setup_vector_database(temp_db_path, temp_vector_db_path):
     documents = [Document(page_content="This is a test document.")]
@@ -124,15 +138,20 @@ def test_setup_vector_database(temp_db_path, temp_vector_db_path):
     vector_db = setup_vector_database(documents, embedding_function)
     assert isinstance(vector_db, Chroma)
 
+
 def test_setup_empty_retriever(temp_db_path, temp_vector_db_path):
     embedding_function = FakeEmbeddings(size=1)
     retriever = setup_empty_retriever(embedding_function)
     assert isinstance(retriever, VectorStoreRetriever)
 
-def test_setup_full_retriever(temp_db_path, temp_vector_db_path, setup_test_directories):
+
+def test_setup_full_retriever(
+    temp_db_path, temp_vector_db_path, setup_test_directories
+):
     embedding_function = FakeEmbeddings(size=1)
     retriever = setup_full_retriever(embedding_function)
     assert isinstance(retriever, VectorStoreRetriever)
+
 
 def test_setup_embeddings():
     config_fake = VectorStoreConfig(embeddings="FAKE", retriever="EMPTY")
@@ -142,6 +161,7 @@ def test_setup_embeddings():
     config_openai = VectorStoreConfig(embeddings="OPENAI", retriever="EMPTY")
     embeddings = setup_embeddings(config_openai)
     assert isinstance(embeddings, OpenAIEmbeddings)
+
 
 def test_setup_retriever(temp_db_path, temp_vector_db_path, setup_test_directories):
     config_empty = VectorStoreConfig(embeddings="FAKE", retriever="EMPTY")
