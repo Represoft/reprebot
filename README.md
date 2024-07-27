@@ -10,7 +10,7 @@ National University of Colombia.
 
 </div>
 
-## Introduction 🚀
+## Introduction 👋
 
 **Reprebot** uses a method called Retrieval Augmented Generation (RAG).
 This technique involves utilizing a Language Model (LLM) to generate text using
@@ -194,6 +194,71 @@ py reset_vector_store.py
 
 The generated report will be a JSON file located in the `src/scripts` folder.
 
+## Deployment 🚀
+
+Here are some instructions to deploy the application to an AWS EC2 instance.
+
+1. **Access your AWS account:** If you don't have one, you can create one [here](https://aws.amazon.com/free/). Keep in mind you will need to provide the details of a credit card to create your account.
+2. **[Launch](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html#ec2-launch-instance) an AWS instance:** We suggest using Ubuntu (x86) with a minimum of 4 GiB of Memory (`t2.medium`), but you can try other options.
+3. **Select or generate a key pair** so that you can access your instance via SSH. We suggest using `.pem` format for the private key so that you can use it with OpenSSH, but you could use `.ppk` for PuTTY too.
+4. **Start your instance** if it's not started yet and get the public DNS.
+5. **Connect to your instance** by running:
+
+    ```sh
+    ssh -i /path/to/your-key.pem ec2-user@your-instance-public-dns
+    ```
+
+    Here's an example of how the command could look:
+
+    ```sh
+    ssh -i .ssh/represoft-ssh-key-pair.pem ubuntu@ec2-18-116-33-151.us-east-2.compute.amazonaws.com
+    ```
+
+6. Once you access the instance, install [Docker](https://docs.docker.com/engine/install/ubuntu/) and [Docker Compose](https://docs.docker.com/compose/install/linux/#install-using-the-repository).
+7. **Clone our repository:**
+
+    ```sh
+    git clone https://github.com/Represoft/reprebot.git
+    ```
+
+8. **Set the environment variables** with the `export` command or by creating a `.env` file in the root of the repository:
+
+    ```sh
+    echo "OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>" > ~/reprebot/.env
+    echo "API_HOST=api" >> ~/reprebot/.env
+    ```
+
+9. **Build the Docker images:**
+
+    ```sh
+    docker compose build
+    ```
+
+10. **Run the application:**
+
+    ```sh
+    docker compose up
+    ```
+
+11. **Allow inbound traffic on port 8501** for your EC2 instance by modifying the Security Group associated with your instance. Here's how to do it:
+
+    1. Open the Amazon EC2 [console](https://console.aws.amazon.com/ec2/).
+    2. In the navigation pane, choose "Security Groups."
+    3. Find and select the Security Group associated with your EC2 instance.
+    4. In the lower pane, select the "Inbound rules" tab.
+    5. Click "Edit inbound rules."
+    6. Click "Add rule."
+    7. For the new rule, set the following:
+        - Type: Custom TCP
+        - Port range: 8501
+        - Source: Anywhere-IPv4 (0.0.0.0/0) if you want to allow access from any IP address. For more restricted access, you can specify a specific IP or range.
+    8. Click "Save rules."
+
+    After making this change, your application running on port 8501 should be accessible from the internet.
+
+> [!NOTE]
+> You can try other deployment options like using another cloud provider or your own server, or a different cloud service based on containers instead of running instances. You can also deploy only the API and consume it from a different interface instead of our Streamlit application, so that you can integrate the system into your applications.
+
 ## Technical Details ⚙️
 
 ### Architecture 🏯
@@ -231,3 +296,14 @@ Reprebot relies on the following dependencies:
 - `streamlit`
 - `transformers`
 - `uvicorn`
+
+## What can be done better? 💡
+
+- **Upgrade the database and vector store modules** to scalable, production-ready options like PostgreSQL.
+- **Break down the application modules** into independent services that can run in a microservices architecture, deployable in a serverless environment.
+- **Enhance security measures** by implementing features like a signed certificate for the API endpoint.
+- **Store the RAG system's context** in a storage service and create an admin-friendly UI to easily update and manage information related to the faculty and the university.
+- **Develop a reporting module** to generate downloadable reports or raw data from logs. This will help admins gain insights to improve the application and the chatbot's responses.
+- **Refactor the code** to eliminate the use of `sys.path.append("../../")` for importing modules.
+- **Use a static type checker** like [mypy](https://mypy.readthedocs.io/en/stable/) or another suitable tool.
+- **Create a custom front-end application** using a framework like React.js, tailored to institutional designs and incorporating more features, rather than relying on the limited Streamlit application.
